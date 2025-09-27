@@ -69,12 +69,19 @@ public class CreatePatientHandler : ICommandHandler<CreatePatientCommand, Result
       createdPatient.LastName,
       createdPatient.DateOfBirth,
       createdPatient.Gender.ToString(),
-      createdPatient.Relationship,
       createdPatient.PhoneNumber,
+      createdPatient.Relationship,
+      createdPatient.EmergencyContactName,
+      createdPatient.EmergencyContactPhone,
+      createdPatient.EmergencyContactRelationship,
       createdPatient.BloodType,
       createdPatient.Allergies,
+      createdPatient.Notes,
+      createdPatient.ShareWithFamily,
+      createdPatient.RestrictedDataTypes,
       createdPatient.IsActive,
-      createdPatient.CreatedAt
+      createdPatient.CreatedAt,
+      createdPatient.LastAccessedAt
     ));
   }
 }

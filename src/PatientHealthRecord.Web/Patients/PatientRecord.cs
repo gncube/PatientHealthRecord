@@ -1,7 +1,7 @@
 namespace PatientHealthRecord.Web.Patients;
 
 public record PatientRecord(
-    int Id,
+    Guid Id,
     string Email,
     string FirstName,
     string LastName,
@@ -13,10 +13,10 @@ public record PatientRecord(
     string? EmergencyContactPhone,
     string? EmergencyContactRelationship,
     string? BloodType,
-    List<string> Allergies,
+    List<string>? Allergies,
     string? Notes,
     bool ShareWithFamily,
-    List<string> RestrictedDataTypes,
+    List<string>? RestrictedDataTypes,
     bool IsActive,
     DateTime CreatedAt,
     DateTime? LastAccessedAt);

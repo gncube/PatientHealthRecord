@@ -41,3 +41,14 @@ Content-Type: application/json
 @id_to_delete=1
 DELETE {{host}}:{{port}}/Contributors/{{id_to_delete}}
 
+###
+
+// List all patients
+GET {{host}}:{{port}}/Patients
+
+###
+
+// Get a specific patient
+@patient_id_to_get=1
+GET {{host}}:{{port}}/Patients/{{patient_id_to_get}}
+

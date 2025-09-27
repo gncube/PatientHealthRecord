@@ -1,5 +1,6 @@
 using PatientHealthRecord.Core.PatientAggregate;
 using PatientHealthRecord.Core.ValueObjects;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace PatientHealthRecord.Infrastructure.Data.Config;
 
@@ -77,13 +78,21 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
     builder.Property(p => p.Allergies)
         .HasConversion(
             v => string.Join(';', v),
-            v => v.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList())
+            v => v.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList(),
+            new ValueComparer<List<string>>(
+                (c1, c2) => (c1 == null && c2 == null) || (c1 != null && c2 != null && c1.SequenceEqual(c2)),
+                c => c == null ? 0 : c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                c => c == null ? new List<string>() : c.ToList()))
         .HasMaxLength(1000); // Max length for serialized allergies
 
     builder.Property(p => p.RestrictedDataTypes)
         .HasConversion(
             v => string.Join(';', v),
-            v => v.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList())
+            v => v.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList(),
+            new ValueComparer<List<string>>(
+                (c1, c2) => (c1 == null && c2 == null) || (c1 != null && c2 != null && c1.SequenceEqual(c2)),
+                c => c == null ? 0 : c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                c => c.ToList()))
         .HasMaxLength(500); // Max length for serialized restricted data types
 
     // Configure indexes for common queries

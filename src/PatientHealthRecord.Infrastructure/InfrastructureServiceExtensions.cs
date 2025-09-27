@@ -3,9 +3,11 @@ using PatientHealthRecord.Core.Services;
 using PatientHealthRecord.Infrastructure.Data;
 using PatientHealthRecord.Infrastructure.Data.Queries;
 using PatientHealthRecord.UseCases.Contributors.List;
+using PatientHealthRecord.UseCases.Patients.List;
 
 
 namespace PatientHealthRecord.Infrastructure;
+
 public static class InfrastructureServiceExtensions
 {
   public static IServiceCollection AddInfrastructureServices(
@@ -21,6 +23,7 @@ public static class InfrastructureServiceExtensions
     services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>))
            .AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>))
            .AddScoped<IListContributorsQueryService, ListContributorsQueryService>()
+           .AddScoped<IListPatientsQueryService, ListPatientsQueryService>()
            .AddScoped<IDeleteContributorService, DeleteContributorService>();
 
 

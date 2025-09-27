@@ -49,7 +49,7 @@ GET {{host}}:{{port}}/Patients
 ###
 
 // Get a specific patient
-@patient_id_to_get=1
+@patient_id_to_get= 0db4d0d8-48df-444c-9b21-13f8740869eb
 GET {{host}}:{{port}}/Patients/{{patient_id_to_get}}
 
 ###

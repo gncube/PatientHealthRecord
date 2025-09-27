@@ -1,0 +1,28 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="CleanArchitecture.nuspec" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/PatientHealthRecord.Core/PatientHealthRecord.Core.csproj" />
+    <Project Path="src/PatientHealthRecord.Infrastructure/PatientHealthRecord.Infrastructure.csproj" />
+    <Project Path="src/PatientHealthRecord.UseCases/PatientHealthRecord.UseCases.csproj" />
+    <Project Path="src/PatientHealthRecord.Web/PatientHealthRecord.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/PatientHealthRecord.FunctionalTests/PatientHealthRecord.FunctionalTests.csproj">
+      <BuildDependency Project="src/PatientHealthRecord.Web/PatientHealthRecord.Web.csproj" />
+    </Project>
+    <Project Path="tests/PatientHealthRecord.IntegrationTests/PatientHealthRecord.IntegrationTests.csproj">
+      <BuildDependency Project="src/PatientHealthRecord.Infrastructure/PatientHealthRecord.Infrastructure.csproj" />
+    </Project>
+    <Project Path="tests/PatientHealthRecord.UnitTests/PatientHealthRecord.UnitTests.csproj" />
+  </Folder>
+</Solution>

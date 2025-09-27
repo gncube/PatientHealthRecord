@@ -508,3 +508,4 @@ src/PatientHealthRecord.UseCases/obj/Debug/net9.0/PatientHealthRecord.UseCases.c
 /src/PatientHealthRecord.Web/obj/Debug/net9.0/PatientHealthRecord.Web.xml
 /src/PatientHealthRecord.Web/obj/Debug/net9.0/rpswa.dswa.cache.json
 /src/PatientHealthRecord.Web/bin/Debug/net9.0/PatientHealthRecord.Web.xml
+src/PatientHealthRecord.Web/database.sqlite

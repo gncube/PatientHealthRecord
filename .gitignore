@@ -504,3 +504,7 @@ src/PatientHealthRecord.AspireHost/obj/Debug/net9.0/PatientHealthRecord.AspireHo
 src/PatientHealthRecord.Web/bin/Debug/net9.0/PatientHealthRecord.Web.xml
 src/PatientHealthRecord.Web/obj/Debug/net9.0/PatientHealthRecord.Web.xml
 src/PatientHealthRecord.UseCases/obj/Debug/net9.0/PatientHealthRecord.UseCases.csproj.CoreCompileInputs.cache
+/src/PatientHealthRecord.UseCases/obj/Debug/net9.0/PatientHealthRecord.UseCases.csproj.CoreCompileInputs.cache
+/src/PatientHealthRecord.Web/obj/Debug/net9.0/PatientHealthRecord.Web.xml
+/src/PatientHealthRecord.Web/obj/Debug/net9.0/rpswa.dswa.cache.json
+/src/PatientHealthRecord.Web/bin/Debug/net9.0/PatientHealthRecord.Web.xml

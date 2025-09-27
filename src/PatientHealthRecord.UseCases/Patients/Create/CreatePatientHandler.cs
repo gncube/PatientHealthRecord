@@ -20,6 +20,12 @@ public class CreatePatientHandler : IRequestHandler<CreatePatientCommand, Result
 
   public async Task<Result<Guid>> Handle(CreatePatientCommand request, CancellationToken cancellationToken)
   {
+    // Validate email format
+    if (!IsValidEmail(request.Email))
+    {
+      return Result.Error("Invalid email format");
+    }
+
     if (!Enum.TryParse<Gender>(request.Gender, true, out var gender))
     {
       return Result.Error("Invalid gender value");
@@ -39,5 +45,21 @@ public class CreatePatientHandler : IRequestHandler<CreatePatientCommand, Result
     var createdPatient = await _patientRepository.AddAsync(patient, cancellationToken);
 
     return Result.Success(createdPatient.PatientId.Value);
+  }
+
+  private static bool IsValidEmail(string email)
+  {
+    if (string.IsNullOrWhiteSpace(email))
+      return false;
+
+    try
+    {
+      var addr = new System.Net.Mail.MailAddress(email);
+      return addr.Address == email;
+    }
+    catch
+    {
+      return false;
+    }
   }
 }

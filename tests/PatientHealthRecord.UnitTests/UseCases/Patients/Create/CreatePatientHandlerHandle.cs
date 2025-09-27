@@ -37,13 +37,14 @@ public class CreatePatientHandlerHandle
     var command = new CreatePatientCommand(_testEmail, _testFirstName, _testLastName,
       _testDateOfBirth, _testGender, _testRelationship, _testPrimaryContactId, _testPhoneNumber);
 
+    var expectedPatient = CreatePatient();
     _repository.AddAsync(Arg.Any<Patient>(), Arg.Any<CancellationToken>())
-      .Returns(Task.FromResult(CreatePatient()));
+      .Returns(Task.FromResult(expectedPatient));
 
     var result = await _handler.Handle(command, CancellationToken.None);
 
     result.IsSuccess.ShouldBeTrue();
-    result.Value.ShouldBe(CreatePatient().PatientId.Value);
+    result.Value.ShouldBe(expectedPatient.PatientId.Value);
   }
 
   [Fact]
@@ -51,6 +52,9 @@ public class CreatePatientHandlerHandle
   {
     var command = new CreatePatientCommand(_testEmail, _testFirstName, _testLastName,
       _testDateOfBirth, _testGender, _testRelationship, _testPrimaryContactId, _testPhoneNumber);
+
+    _repository.AddAsync(Arg.Any<Patient>(), Arg.Any<CancellationToken>())
+      .Returns(Task.FromResult(CreatePatient()));
 
     await _handler.Handle(command, CancellationToken.None);
 

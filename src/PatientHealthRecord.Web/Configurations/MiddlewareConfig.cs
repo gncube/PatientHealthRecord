@@ -1,4 +1,5 @@
 ﻿using Ardalis.ListStartupServices;
+using Microsoft.EntityFrameworkCore;
 using PatientHealthRecord.Infrastructure.Data;
 
 namespace PatientHealthRecord.Web.Configurations;
@@ -36,8 +37,8 @@ public static class MiddlewareConfig
     try
     {
       var context = services.GetRequiredService<AppDbContext>();
-      //          await context.Database.MigrateAsync();
-      await context.Database.EnsureCreatedAsync();
+      await context.Database.MigrateAsync();
+      // await context.Database.EnsureCreatedAsync();
       await SeedData.InitializeAsync(context);
     }
     catch (Exception ex)

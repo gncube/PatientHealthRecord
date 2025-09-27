@@ -1,19 +1,20 @@
-using Ardalis.Result;
+using PatientHealthRecord.Core.PatientAggregate;
 using PatientHealthRecord.Core.ValueObjects;
+using MediatR;
+using Ardalis.SharedKernel;
 
 namespace PatientHealthRecord.UseCases.Patients.Create;
 
+/// <summary>
+/// Create a new Patient.
+/// </summary>
 public record CreatePatientCommand(
   string Email,
   string FirstName,
   string LastName,
   DateTime DateOfBirth,
-  Gender Gender,
-  string Relationship = "Self",
-  Guid? PrimaryContactId = null,
-  string? PhoneNumber = null,
-  string? EmergencyContactName = null,
-  string? EmergencyContactPhone = null,
-  string? BloodType = null,
-  List<string>? Allergies = null
-) : Ardalis.SharedKernel.ICommand<Result<PatientDto>>;
+  string Gender,
+  string? Relationship,
+  Guid? PrimaryContactId,
+  string? PhoneNumber
+) : Ardalis.SharedKernel.ICommand<Result<Guid>>;

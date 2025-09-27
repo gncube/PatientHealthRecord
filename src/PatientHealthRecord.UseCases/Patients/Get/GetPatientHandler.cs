@@ -1,12 +1,13 @@
 using PatientHealthRecord.Core.PatientAggregate;
+using PatientHealthRecord.Core.Interfaces;
 
 namespace PatientHealthRecord.UseCases.Patients.Get;
 
 public class GetPatientHandler : IQueryHandler<GetPatientQuery, Result<PatientDto>>
 {
-  private readonly IReadRepository<Patient> _repository;
+  private readonly IPatientRepository _repository;
 
-  public GetPatientHandler(IReadRepository<Patient> repository)
+  public GetPatientHandler(IPatientRepository repository)
   {
     _repository = repository;
   }
@@ -14,8 +15,7 @@ public class GetPatientHandler : IQueryHandler<GetPatientQuery, Result<PatientDt
   public async Task<Result<PatientDto>> Handle(GetPatientQuery request,
     CancellationToken cancellationToken)
   {
-    var patientId = new PatientId(request.PatientId);
-    var patient = await _repository.GetByIdAsync(patientId.Value, cancellationToken);
+    var patient = await _repository.GetByIdAsync(request.PatientId, cancellationToken);
 
     if (patient == null)
     {

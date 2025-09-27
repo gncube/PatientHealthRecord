@@ -5,6 +5,6 @@ using Ardalis.SharedKernel;
 namespace PatientHealthRecord.UseCases.Patients.GetFamily;
 
 /// <summary>
-/// Get family members for a patient.
+/// Get family dashboard data for a patient.
 /// </summary>
-public record GetFamilyMembersQuery(Guid FamilyId) : Ardalis.SharedKernel.IQuery<Result<List<PatientSummaryDto>>>;
+public record GetFamilyDashboardQuery(Guid FamilyId) : Ardalis.SharedKernel.IQuery<Result<List<PatientSummaryDto>>>;

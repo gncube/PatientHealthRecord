@@ -1,6 +1,7 @@
 using PatientHealthRecord.Core.PatientAggregate;
 using PatientHealthRecord.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Text.Json;
 
 namespace PatientHealthRecord.Infrastructure.Data.Config;
 
@@ -41,7 +42,8 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
         .HasMaxLength(DataSchemaConstants.PHONE_NUMBER_LENGTH);
 
     builder.Property(p => p.Relationship)
-        .HasMaxLength(DataSchemaConstants.RELATIONSHIP_LENGTH);
+        .HasMaxLength(DataSchemaConstants.RELATIONSHIP_LENGTH)
+        .HasDefaultValue("Self");
 
     builder.Property(p => p.IsActive)
         .IsRequired()
@@ -74,26 +76,18 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
         .IsRequired()
         .HasDefaultValue(true);
 
-    // Configure collections as JSON columns (EF Core 7+)
+    // Store allergies as JSON for SQLite compatibility
     builder.Property(p => p.Allergies)
-        .HasConversion(
-            v => string.Join(';', v),
-            v => v.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList(),
-            new ValueComparer<List<string>>(
-                (c1, c2) => (c1 == null && c2 == null) || (c1 != null && c2 != null && c1.SequenceEqual(c2)),
-                c => c == null ? 0 : c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-                c => c == null ? new List<string>() : c.ToList()))
-        .HasMaxLength(1000); // Max length for serialized allergies
+      .HasConversion(
+        allergies => JsonSerializer.Serialize(allergies, JsonSerializerOptions.Default),
+        json => JsonSerializer.Deserialize<List<string>>(json, JsonSerializerOptions.Default) ?? new List<string>())
+      .HasColumnType("TEXT");
 
     builder.Property(p => p.RestrictedDataTypes)
-        .HasConversion(
-            v => string.Join(';', v),
-            v => v.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList(),
-            new ValueComparer<List<string>>(
-                (c1, c2) => (c1 == null && c2 == null) || (c1 != null && c2 != null && c1.SequenceEqual(c2)),
-                c => c == null ? 0 : c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-                c => c.ToList()))
-        .HasMaxLength(500); // Max length for serialized restricted data types
+      .HasConversion(
+        types => JsonSerializer.Serialize(types, JsonSerializerOptions.Default),
+        json => JsonSerializer.Deserialize<List<string>>(json, JsonSerializerOptions.Default) ?? new List<string>())
+      .HasColumnType("TEXT");
 
     // Configure indexes for common queries
     builder.HasIndex(p => p.Email)

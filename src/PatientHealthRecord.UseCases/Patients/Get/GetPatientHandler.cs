@@ -29,12 +29,19 @@ public class GetPatientHandler : IQueryHandler<GetPatientQuery, Result<PatientDt
       patient.LastName,
       patient.DateOfBirth,
       patient.Gender.ToString(),
-      patient.Relationship,
       patient.PhoneNumber,
+      patient.Relationship,
+      patient.EmergencyContactName,
+      patient.EmergencyContactPhone,
+      patient.EmergencyContactRelationship,
       patient.BloodType,
       patient.Allergies,
+      patient.Notes,
+      patient.ShareWithFamily,
+      patient.RestrictedDataTypes,
       patient.IsActive,
-      patient.CreatedAt
+      patient.CreatedAt,
+      patient.LastAccessedAt
     ));
   }
 }

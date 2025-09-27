@@ -12,7 +12,7 @@ public class ListPatientsQueryService(AppDbContext _db) : IListPatientsQueryServ
   {
     var result = await _db.Patients
       .Select(p => new PatientDto(
-        p.Id,
+        p.PatientId.Value,
         p.Email,
         p.FirstName,
         p.LastName,

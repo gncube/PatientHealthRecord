@@ -1,7 +1,5 @@
-using Ardalis.Result;
-using Ardalis.SharedKernel;
-using PatientHealthRecord.Core.Entities.PatientAggregate;
 using PatientHealthRecord.Core.PatientAggregate;
+using PatientHealthRecord.Core.Specifications;
 
 namespace PatientHealthRecord.UseCases.Patients.GetFamily;
 

@@ -7,6 +7,34 @@ namespace PatientHealthRecord.Infrastructure.Data.Config;
 
 public class PatientConfiguration : IEntityTypeConfiguration<Patient>
 {
+  private static List<string> DeserializeAllergies(string json)
+  {
+    if (string.IsNullOrEmpty(json)) return new List<string>();
+    try
+    {
+      return JsonSerializer.Deserialize<List<string>>(json, JsonSerializerOptions.Default) ?? new List<string>();
+    }
+    catch
+    {
+      // If not valid JSON, treat as comma-separated values
+      return json.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList();
+    }
+  }
+
+  private static List<string> DeserializeRestrictedDataTypes(string json)
+  {
+    if (string.IsNullOrEmpty(json)) return new List<string>();
+    try
+    {
+      return JsonSerializer.Deserialize<List<string>>(json, JsonSerializerOptions.Default) ?? new List<string>();
+    }
+    catch
+    {
+      // If not valid JSON, treat as comma-separated values
+      return json.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList();
+    }
+  }
+
   public void Configure(EntityTypeBuilder<Patient> builder)
   {
     // Configure PatientId as owned type (Value Object)
@@ -80,14 +108,22 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
     builder.Property(p => p.Allergies)
       .HasConversion(
         allergies => JsonSerializer.Serialize(allergies, JsonSerializerOptions.Default),
-        json => JsonSerializer.Deserialize<List<string>>(json, JsonSerializerOptions.Default) ?? new List<string>())
-      .HasColumnType("TEXT");
+        json => DeserializeAllergies(json))
+      .HasColumnType("TEXT")
+      .Metadata.SetValueComparer(new ValueComparer<List<string>>(
+        (c1, c2) => c1 != null && c2 != null && c1.SequenceEqual(c2),
+        c => c == null ? 0 : c.GetHashCode(),
+        c => c == null ? new List<string>() : new List<string>(c)));
 
     builder.Property(p => p.RestrictedDataTypes)
       .HasConversion(
         types => JsonSerializer.Serialize(types, JsonSerializerOptions.Default),
-        json => JsonSerializer.Deserialize<List<string>>(json, JsonSerializerOptions.Default) ?? new List<string>())
-      .HasColumnType("TEXT");
+        json => DeserializeRestrictedDataTypes(json))
+      .HasColumnType("TEXT")
+      .Metadata.SetValueComparer(new ValueComparer<List<string>>(
+        (c1, c2) => c1 != null && c2 != null && c1.SequenceEqual(c2),
+        c => c == null ? 0 : c.GetHashCode(),
+        c => c == null ? new List<string>() : new List<string>(c)));
 
     // Configure indexes for common queries
     builder.HasIndex(p => p.Email)

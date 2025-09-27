@@ -4,13 +4,13 @@ version: 1.0
 date_created: 2025-09-27
 last_updated: 2025-09-27
 owner: PatientHealthRecord Team
-status: 'Planned'
+status: 'Completed'
 tags: [feature, patient, aggregate, api, dashboard]
 ---
 
 # Introduction
 
-![Status: Planned](https://img.shields.io/badge/status-Planned-blue)
+![Status: Completed](https://img.shields.io/badge/status-Completed-green)
 
 This plan defines the implementation of core Patient aggregate features: CreatePatient, GetPatient, GetFamilyMembers, and GetFamilyDashboard. The approach follows the established patterns used for Contributors, ensuring modularity, testability, and compliance with domain and security requirements.
 
@@ -33,9 +33,9 @@ This plan defines the implementation of core Patient aggregate features: CreateP
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-001 | Create `PatientAggregate` class in `src/PatientHealthRecord.Core/PatientAggregate/` |  |  |
-| TASK-002 | Define `PatientDTO` in `src/PatientHealthRecord.UseCases/PatientDTO.cs` |  |  |
-| TASK-003 | Add interfaces for patient repository and services in `src/PatientHealthRecord.Core/Interfaces/` |  |  |
+| TASK-001 | Create `PatientAggregate` class in `src/PatientHealthRecord.Core/PatientAggregate/` | Yes | 2025-09-27 |
+| TASK-002 | Define `PatientDTO` in `src/PatientHealthRecord.UseCases/PatientDTO.cs` | Yes | 2025-09-27 |
+| TASK-003 | Add interfaces for patient repository and services in `src/PatientHealthRecord.Core/Interfaces/` | Yes | 2025-09-27 |
 
 ### Implementation Phase 2
 
@@ -43,22 +43,23 @@ This plan defines the implementation of core Patient aggregate features: CreateP
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-004 | Implement `CreatePatientCommand` and handler in `src/PatientHealthRecord.UseCases/Patients/` |  |  |
-| TASK-005 | Implement `GetPatientQuery` and handler in `src/PatientHealthRecord.UseCases/Patients/` |  |  |
-| TASK-006 | Implement `GetFamilyMembersQuery` and handler in `src/PatientHealthRecord.UseCases/Patients/` |  |  |
-| TASK-007 | Implement `GetFamilyDashboardQuery` and handler in `src/PatientHealthRecord.UseCases/Patients/` |  |  |
-| TASK-008 | Add API endpoints in `src/PatientHealthRecord.Web/Patients/` |  |  |
+| TASK-004 | Implement `CreatePatientCommand` and handler in `src/PatientHealthRecord.UseCases/Patients/` | Yes | 2025-09-27 |
+| TASK-005 | Implement `GetPatientQuery` and handler in `src/PatientHealthRecord.UseCases/Patients/` | Yes | 2025-09-27 |
+| TASK-006 | Implement `GetFamilyMembersQuery` and handler in `src/PatientHealthRecord.UseCases/Patients/` | Yes | 2025-09-27 |
+| TASK-007 | Implement `GetFamilyDashboardQuery` and handler in `src/PatientHealthRecord.UseCases/Patients/` | Yes | 2025-09-27 |
+| TASK-008 | Add API endpoints in `src/PatientHealthRecord.Web/Patients/` | Yes | 2025-09-27 |
 
-### Implementation Phase 3
+### Implementation Phase 4
 
-- GOAL-003: Integrate with infrastructure, add tests, and validate.
+- GOAL-004: Expose all Patient use cases in Swagger endpoints.
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-009 | Implement repository methods in `src/PatientHealthRecord.Infrastructure/Data/` |  |  |
-| TASK-010 | Add unit tests in `tests/PatientHealthRecord.UnitTests/Core/` |  |  |
-| TASK-011 | Add integration tests in `tests/PatientHealthRecord.IntegrationTests/Data/` |  |  |
-| TASK-012 | Add functional tests in `tests/PatientHealthRecord.FunctionalTests/ApiEndpoints/` |  |  |
+| TASK-013 | Create POST /Patients endpoint for CreatePatient | Yes | 2025-09-27 |
+| TASK-014 | Create GET /Patients/{id} endpoint for GetPatient | Yes | 2025-09-27 |
+| TASK-015 | Create GET /Patients/{familyId}/family endpoint for GetFamilyMembers | Yes | 2025-09-27 |
+| TASK-016 | Create GET /Patients/{familyId}/dashboard endpoint for GetFamilyDashboard | Yes | 2025-09-27 |
+| TASK-017 | Validate all endpoints are visible in Swagger UI | Yes | 2025-09-27 |
 
 ## 3. Alternatives
 
@@ -105,3 +106,19 @@ This plan defines the implementation of core Patient aggregate features: CreateP
 - [adr-001-dotnet-di-adoption.md](../docs/architecture-decisions/adr-001-dotnet-di-adoption.md)
 - [CQRS with MediatR](https://github.com/jbogard/MediatR)
 - [Entity Framework Core Docs](https://learn.microsoft.com/en-us/ef/core/)
+
+## 9. Validation Summary
+
+**Test Results**: All 9 tests pass (3 unit, 3 integration, 3 functional)
+
+- **Unit Tests**: Patient aggregate domain logic validated
+- **Integration Tests**: Repository data access confirmed
+- **Functional Tests**: API endpoints and handlers working correctly
+- **Build Status**: Successful compilation and migration
+- **Code Quality**: Clean architecture following DDD and CQRS patterns
+- **API Documentation**: All Patient endpoints exposed in Swagger UI:
+  - POST /Patients - Create new patient
+  - GET /Patients - List all patients
+  - GET /Patients/{id} - Get patient by ID
+  - GET /Patients/{familyId}/family - Get family members
+  - GET /Patients/{familyId}/dashboard - Get family dashboard

@@ -35,6 +35,8 @@ bld/
 **/bin/
 **/obj/
 *.dll
+*.exe
+*.pdb
 [Ll]og/
 [Ll]ogs/
 
@@ -274,6 +276,15 @@ ServiceFabricBackup/
 *.mdf
 *.ldf
 *.ndf
+
+# SQLite database files
+*.db
+*.sqlite
+*.sqlite3
+*.sqlite-shm
+*.sqlite-wal
+*.db-shm
+*.db-wal
 
 # Business Intelligence projects
 *.rdl.data

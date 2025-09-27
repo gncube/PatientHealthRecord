@@ -22,6 +22,7 @@ public static class InfrastructureServiceExtensions
 
     services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>))
            .AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>))
+           .AddScoped<IPatientRepository, PatientRepository>()
            .AddScoped<IListContributorsQueryService, ListContributorsQueryService>()
            .AddScoped<IListPatientsQueryService, ListPatientsQueryService>()
            .AddScoped<IDeleteContributorService, DeleteContributorService>();

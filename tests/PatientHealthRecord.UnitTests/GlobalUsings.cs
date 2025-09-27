@@ -1,6 +1,8 @@
 ﻿global using System.Runtime.CompilerServices;
 global using Ardalis.SharedKernel;
 global using PatientHealthRecord.Core.ContributorAggregate;
+global using PatientHealthRecord.Core.PatientAggregate;
+global using PatientHealthRecord.Core.ValueObjects;
 global using PatientHealthRecord.UseCases.Contributors.Create;
 global using Shouldly;
 global using MediatR;

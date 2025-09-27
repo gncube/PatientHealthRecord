@@ -1,33 +1,43 @@
+using PatientHealthRecord.Core.Interfaces;
 using PatientHealthRecord.Core.PatientAggregate;
 using PatientHealthRecord.Core.ValueObjects;
+using MediatR;
+using Ardalis.SharedKernel;
 
 namespace PatientHealthRecord.UseCases.Patients.Create;
 
-public class CreatePatientHandler : ICommandHandler<CreatePatientCommand, Result<Guid>>
+/// <summary>
+/// Handler for creating a new Patient.
+/// </summary>
+public class CreatePatientHandler : IRequestHandler<CreatePatientCommand, Result<Guid>>
 {
-  private readonly IRepository<Patient> _repository;
+  private readonly IPatientRepository _patientRepository;
 
-  public CreatePatientHandler(IRepository<Patient> repository)
+  public CreatePatientHandler(IPatientRepository patientRepository)
   {
-    _repository = repository;
+    _patientRepository = patientRepository;
   }
 
-  public async Task<Result<Guid>> Handle(CreatePatientCommand request,
-    CancellationToken cancellationToken)
+  public async Task<Result<Guid>> Handle(CreatePatientCommand request, CancellationToken cancellationToken)
   {
-    var gender = Enum.Parse<Gender>(request.Gender);
-    var newPatient = new Patient(
-      request.Email,
-      request.FirstName,
-      request.LastName,
-      request.DateOfBirth,
-      gender,
-      request.Relationship ?? "Self",
-      request.PrimaryContactId,
-      request.PhoneNumber
-    );
-    var createdItem = await _repository.AddAsync(newPatient, cancellationToken);
+    if (!Enum.TryParse<Gender>(request.Gender, true, out var gender))
+    {
+      return Result.Error("Invalid gender value");
+    }
 
-    return createdItem.PatientId.Value;
+    var patient = new Patient(
+        request.Email,
+        request.FirstName,
+        request.LastName,
+        request.DateOfBirth,
+        gender,
+        request.Relationship ?? "Self",
+        request.PrimaryContactId,
+        request.PhoneNumber
+    );
+
+    var createdPatient = await _patientRepository.AddAsync(patient, cancellationToken);
+
+    return Result.Success(createdPatient.PatientId.Value);
   }
 }

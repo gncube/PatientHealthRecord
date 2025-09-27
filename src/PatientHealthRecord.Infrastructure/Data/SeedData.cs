@@ -37,7 +37,8 @@ public static class SeedData
     dateOfBirth: new DateTime(2010, 11, 5), // Child patient
     gender: Gender.Male,
     relationship: "Child",
-    phoneNumber: null // Child may not have own phone
+    phoneNumber: null, // Child may not have own phone
+    primaryContactId: Patient1.PatientId.Value // Child belongs to Patient1's family
   );
 
   public static async Task InitializeAsync(AppDbContext dbContext)

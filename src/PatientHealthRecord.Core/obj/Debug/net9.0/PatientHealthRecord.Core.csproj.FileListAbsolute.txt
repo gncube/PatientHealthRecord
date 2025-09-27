@@ -1,0 +1,13 @@
+C:\Users\Public\REPOS\PatientHealthRecord\src\PatientHealthRecord.Core\bin\Debug\net9.0\PatientHealthRecord.Core.deps.json
+C:\Users\Public\REPOS\PatientHealthRecord\src\PatientHealthRecord.Core\bin\Debug\net9.0\PatientHealthRecord.Core.dll
+C:\Users\Public\REPOS\PatientHealthRecord\src\PatientHealthRecord.Core\bin\Debug\net9.0\PatientHealthRecord.Core.pdb
+C:\Users\Public\REPOS\PatientHealthRecord\src\PatientHealthRecord.Core\obj\Debug\net9.0\PatientHealthRecord.Core.csproj.AssemblyReference.cache
+C:\Users\Public\REPOS\PatientHealthRecord\src\PatientHealthRecord.Core\obj\Debug\net9.0\PatientHealthRecord.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Public\REPOS\PatientHealthRecord\src\PatientHealthRecord.Core\obj\Debug\net9.0\PatientHealthRecord.Core.AssemblyInfoInputs.cache
+C:\Users\Public\REPOS\PatientHealthRecord\src\PatientHealthRecord.Core\obj\Debug\net9.0\PatientHealthRecord.Core.AssemblyInfo.cs
+C:\Users\Public\REPOS\PatientHealthRecord\src\PatientHealthRecord.Core\obj\Debug\net9.0\PatientHealthRecord.Core.csproj.CoreCompileInputs.cache
+C:\Users\Public\REPOS\PatientHealthRecord\src\PatientHealthRecord.Core\obj\Debug\net9.0\PatientHealthRecord.Core.sourcelink.json
+C:\Users\Public\REPOS\PatientHealthRecord\src\PatientHealthRecord.Core\obj\Debug\net9.0\PatientHealthRecord.Core.dll
+C:\Users\Public\REPOS\PatientHealthRecord\src\PatientHealthRecord.Core\obj\Debug\net9.0\refint\PatientHealthRecord.Core.dll
+C:\Users\Public\REPOS\PatientHealthRecord\src\PatientHealthRecord.Core\obj\Debug\net9.0\PatientHealthRecord.Core.pdb
+C:\Users\Public\REPOS\PatientHealthRecord\src\PatientHealthRecord.Core\obj\Debug\net9.0\ref\PatientHealthRecord.Core.dll

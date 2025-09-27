@@ -6,5 +6,5 @@ namespace PatientHealthRecord.UseCases.Patients.List;
 /// </summary>
 public interface IListPatientsQueryService
 {
-    Task<IEnumerable<PatientDTO>> ListAsync();
+    Task<IEnumerable<PatientDto>> ListAsync();
 }

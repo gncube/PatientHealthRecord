@@ -1,6 +1,6 @@
 namespace PatientHealthRecord.UseCases.Patients;
 
-public record PatientDTO(
+public record PatientDto(
     int Id,
     string Email,
     string FirstName,

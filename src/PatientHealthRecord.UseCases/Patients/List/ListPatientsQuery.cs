@@ -3,9 +3,9 @@ using PatientHealthRecord.UseCases.Patients;
 
 namespace PatientHealthRecord.UseCases.Patients.List;
 
-public record ListPatientsQuery(int? Skip, int? Take) : IQuery<Result<IEnumerable<PatientDTO>>>;
+public record ListPatientsQuery(int? Skip, int? Take) : IQuery<Result<IEnumerable<PatientDto>>>;
 
-public class ListPatientsQueryHandler : IQueryHandler<ListPatientsQuery, Result<IEnumerable<PatientDTO>>>
+public class ListPatientsQueryHandler : IQueryHandler<ListPatientsQuery, Result<IEnumerable<PatientDto>>>
 {
     private readonly IListPatientsQueryService _query;
 
@@ -14,7 +14,7 @@ public class ListPatientsQueryHandler : IQueryHandler<ListPatientsQuery, Result<
         _query = query;
     }
 
-    public async Task<Result<IEnumerable<PatientDTO>>> Handle(ListPatientsQuery request, CancellationToken cancellationToken)
+    public async Task<Result<IEnumerable<PatientDto>>> Handle(ListPatientsQuery request, CancellationToken cancellationToken)
     {
         var result = await _query.ListAsync();
 

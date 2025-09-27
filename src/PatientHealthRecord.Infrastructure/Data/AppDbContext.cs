@@ -1,12 +1,15 @@
 ﻿using PatientHealthRecord.Core.ContributorAggregate;
+using PatientHealthRecord.Core.PatientAggregate;
 
 namespace PatientHealthRecord.Infrastructure.Data;
+
 public class AppDbContext(DbContextOptions<AppDbContext> options,
   IDomainEventDispatcher? dispatcher) : DbContext(options)
 {
   private readonly IDomainEventDispatcher? _dispatcher = dispatcher;
 
   public DbSet<Contributor> Contributors => Set<Contributor>();
+  public DbSet<Patient> Patients => Set<Patient>();
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

@@ -52,3 +52,83 @@ GET {{host}}:{{port}}/Patients
 @patient_id_to_get=1
 GET {{host}}:{{port}}/Patients/{{patient_id_to_get}}
 
+###
+
+// Create a new patient (Botswana family member)
+POST {{host}}:{{port}}/Patients
+Content-Type: application/json
+
+{
+  "email": "kgosi.molefe@gmail.com",
+  "firstName": "Kgosi",
+  "lastName": "Molefe",
+  "dateOfBirth": "1985-03-15",
+  "gender": "Male",
+  "relationship": "Father",
+  "primaryContactId": null,
+  "phoneNumber": "+267 71234567"
+}
+
+###
+
+// Create another patient (Botswana family member)
+POST {{host}}:{{port}}/Patients
+Content-Type: application/json
+
+{
+  "email": "mpho.molefe@outlook.com",
+  "firstName": "Mpho",
+  "lastName": "Molefe",
+  "dateOfBirth": "1988-07-22",
+  "gender": "Female",
+  "relationship": "Mother",
+  "primaryContactId": null,
+  "phoneNumber": "+267 72345678"
+}
+
+###
+
+// Create child patient (Botswana family member)
+POST {{host}}:{{port}}/Patients
+Content-Type: application/json
+
+{
+  "email": "thato.molefe@school.edu.bw",
+  "firstName": "Thato",
+  "lastName": "Molefe",
+  "dateOfBirth": "2015-11-08",
+  "gender": "Male",
+  "relationship": "Son",
+  "primaryContactId": null,
+  "phoneNumber": "+267 73456789"
+}
+
+###
+
+// Create another child patient (Botswana family member)
+POST {{host}}:{{port}}/Patients
+Content-Type: application/json
+
+{
+  "email": "keabetswe.molefe@school.edu.bw",
+  "firstName": "Keabetswe",
+  "lastName": "Molefe",
+  "dateOfBirth": "2018-05-12",
+  "gender": "Female",
+  "relationship": "Daughter",
+  "primaryContactId": null,
+  "phoneNumber": "+267 74567890"
+}
+
+###
+
+// Get family members for a patient (use a family ID from created patients)
+@family_id_to_get=550e8400-e29b-41d4-a716-446655440000
+GET {{host}}:{{port}}/Patients/{{family_id_to_get}}/family
+
+###
+
+// Get family dashboard for a patient (use a family ID from created patients)
+@family_dashboard_id=550e8400-e29b-41d4-a716-446655440000
+GET {{host}}:{{port}}/Patients/{{family_dashboard_id}}/dashboard
+

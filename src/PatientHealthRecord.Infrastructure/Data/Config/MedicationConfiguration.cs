@@ -7,15 +7,19 @@ public class MedicationConfiguration : IEntityTypeConfiguration<Medication>
 {
     public void Configure(EntityTypeBuilder<Medication> builder)
     {
-        // Configure PatientId as owned type (Value Object)
-        builder.OwnsOne(m => m.PatientId, patientId =>
-        {
-            patientId.Property(pi => pi.Value)
-          .HasColumnName("PatientId")
-          .IsRequired();
-        });
+        // Configure PatientId as foreign key (references Patient.PatientId)
+        builder.Property(m => m.PatientId)
+            .HasConversion(
+                patientId => patientId.Value,
+                value => new PatientId(value))
+            .HasColumnName("PatientId")
+            .IsRequired();
 
-        // Configure basic properties with constraints
+        // Configure foreign key relationship to Patient
+        builder.HasOne<Patient>()
+            .WithMany()
+            .HasForeignKey(m => m.PatientId)
+            .OnDelete(DeleteBehavior.Cascade);        // Configure basic properties with constraints
         builder.Property(m => m.Name)
             .HasMaxLength(DataSchemaConstants.MEDICATION_NAME_LENGTH)
             .IsRequired();
@@ -37,8 +41,7 @@ public class MedicationConfiguration : IEntityTypeConfiguration<Medication>
         // Configure Status enum
         builder.Property(m => m.Status)
             .HasConversion<int>()
-            .IsRequired()
-            .HasDefaultValue((int)MedicationStatus.Active);
+            .IsRequired();
 
         builder.Property(m => m.PrescribedBy)
             .HasMaxLength(DataSchemaConstants.MEDICATION_PRESCRIBED_BY_LENGTH);

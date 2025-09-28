@@ -7,15 +7,19 @@ public class ConditionConfiguration : IEntityTypeConfiguration<Condition>
 {
     public void Configure(EntityTypeBuilder<Condition> builder)
     {
-        // Configure PatientId as owned type (Value Object)
-        builder.OwnsOne(c => c.PatientId, patientId =>
-        {
-            patientId.Property(pi => pi.Value)
-          .HasColumnName("PatientId")
-          .IsRequired();
-        });
+        // Configure PatientId as foreign key (references Patient.PatientId)
+        builder.Property(c => c.PatientId)
+            .HasConversion(
+                patientId => patientId.Value,
+                value => new PatientId(value))
+            .HasColumnName("PatientId")
+            .IsRequired();
 
-        // Configure basic properties with constraints
+        // Configure foreign key relationship to Patient
+        builder.HasOne<Patient>()
+            .WithMany()
+            .HasForeignKey(c => c.PatientId)
+            .OnDelete(DeleteBehavior.Cascade);        // Configure basic properties with constraints
         builder.Property(c => c.Name)
             .HasMaxLength(DataSchemaConstants.CONDITION_NAME_LENGTH)
             .IsRequired();
@@ -30,14 +34,12 @@ public class ConditionConfiguration : IEntityTypeConfiguration<Condition>
         // Configure Status enum
         builder.Property(c => c.Status)
             .HasConversion<int>()
-            .IsRequired()
-            .HasDefaultValue((int)ConditionStatus.Active);
+            .IsRequired();
 
         // Configure Severity enum
         builder.Property(c => c.Severity)
             .HasConversion<int>()
-            .IsRequired()
-            .HasDefaultValue((int)ConditionSeverity.Mild);
+            .IsRequired();
 
         builder.Property(c => c.Treatment)
             .HasMaxLength(DataSchemaConstants.CONDITION_TREATMENT_LENGTH);

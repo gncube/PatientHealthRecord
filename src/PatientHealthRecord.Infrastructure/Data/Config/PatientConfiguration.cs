@@ -37,13 +37,13 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
 
   public void Configure(EntityTypeBuilder<Patient> builder)
   {
-    // Configure PatientId as owned type (Value Object)
-    builder.OwnsOne(p => p.PatientId, patientId =>
-    {
-      patientId.Property(pi => pi.Value)
-        .HasColumnName("PatientId")
-        .IsRequired();
-    });
+    // Configure PatientId as the primary key (Value Object)
+    builder.HasKey(p => p.PatientId);
+    builder.Property(p => p.PatientId)
+        .HasConversion(
+            patientId => patientId.Value,
+            value => new PatientId(value))
+        .ValueGeneratedNever(); // Guid is generated in domain, not by database
 
     // Configure basic properties with constraints
     builder.Property(p => p.Email)

@@ -132,3 +132,232 @@ GET {{host}}:{{port}}/Patients/{{family_id_to_get}}/family
 @family_dashboard_id=550e8400-e29b-41d4-a716-446655440000
 GET {{host}}:{{port}}/Patients/{{family_dashboard_id}}/dashboard
 
+###
+
+# Clinical Data Endpoints
+
+// List all clinical observations
+GET {{host}}:{{port}}/ClinicalObservations
+
+###
+
+// Get clinical observations for a specific patient
+@patient_id_for_obs=550e8400-e29b-41d4-a716-446655440000
+GET {{host}}:{{port}}/ClinicalObservations?patientId={{patient_id_for_obs}}
+
+###
+
+// Create a new clinical observation
+POST {{host}}:{{port}}/ClinicalObservations
+Content-Type: application/json
+
+{
+  "patientId": "550e8400-e29b-41d4-a716-446655440000",
+  "observationType": "Temperature",
+  "value": "98.6",
+  "unit": "F",
+  "recordedAt": "2025-01-15T10:30:00Z",
+  "recordedBy": "Self",
+  "category": "Vital",
+  "notes": "Morning temperature check"
+}
+
+###
+
+// Get a specific clinical observation
+@obs_id_to_get=1
+GET {{host}}:{{port}}/ClinicalObservations/{{obs_id_to_get}}
+
+###
+
+// Update a clinical observation
+@obs_id_to_update=1
+PUT {{host}}:{{port}}/ClinicalObservations/{{obs_id_to_update}}
+Content-Type: application/json
+
+{
+  "id": {{obs_id_to_update}},
+  "patientId": "550e8400-e29b-41d4-a716-446655440000",
+  "observationType": "Temperature",
+  "value": "98.6",
+  "unit": "F",
+  "recordedAt": "2025-01-15T10:30:00Z",
+  "recordedBy": "Self",
+  "category": "Vital",
+  "notes": "Morning temperature check - updated",
+  "isVisibleToFamily": true
+}
+
+###
+
+// Delete a clinical observation
+@obs_id_to_delete=1
+DELETE {{host}}:{{port}}/ClinicalObservations/{{obs_id_to_delete}}
+
+###
+
+# Conditions Endpoints
+
+// List all conditions
+GET {{host}}:{{port}}/Conditions
+
+###
+
+// Get conditions for a specific patient
+@patient_id_for_conditions=550e8400-e29b-41d4-a716-446655440000
+GET {{host}}:{{port}}/Conditions?patientId={{patient_id_for_conditions}}
+
+###
+
+// Create a new condition
+POST {{host}}:{{port}}/Conditions
+Content-Type: application/json
+
+{
+  "patientId": "550e8400-e29b-41d4-a716-446655440000",
+  "name": "Hypertension",
+  "description": "High blood pressure requiring monitoring",
+  "onsetDate": "2024-06-01",
+  "severity": "Moderate",
+  "treatment": "Lifestyle changes and monitoring",
+  "recordedBy": "Dr. Smith"
+}
+
+###
+
+// Get a specific condition
+@condition_id_to_get=1
+GET {{host}}:{{port}}/Conditions/{{condition_id_to_get}}
+
+###
+
+// Update a condition
+@condition_id_to_update=1
+PUT {{host}}:{{port}}/Conditions/{{condition_id_to_update}}
+Content-Type: application/json
+
+{
+  "id": {{condition_id_to_update}},
+  "patientId": "550e8400-e29b-41d4-a716-446655440000",
+  "name": "Hypertension",
+  "description": "High blood pressure - medication added",
+  "onsetDate": "2024-06-01",
+  "severity": "Moderate",
+  "treatment": "Lifestyle changes, monitoring, and medication",
+  "recordedBy": "Dr. Smith",
+  "isVisibleToFamily": true
+}
+
+###
+
+// Resolve a condition
+@condition_id_to_resolve=1
+POST {{host}}:{{port}}/Conditions/{{condition_id_to_resolve}}/resolve
+Content-Type: application/json
+
+{
+  "resolvedDate": "2025-01-15"
+}
+
+###
+
+// Delete a condition
+@condition_id_to_delete=1
+DELETE {{host}}:{{port}}/Conditions/{{condition_id_to_delete}}
+
+###
+
+# Medications Endpoints
+
+// List all medications
+GET {{host}}:{{port}}/Medications
+
+###
+
+// Get medications for a specific patient
+@patient_id_for_medications=550e8400-e29b-41d4-a716-446655440000
+GET {{host}}:{{port}}/Medications?patientId={{patient_id_for_medications}}
+
+###
+
+// Create a new medication
+POST {{host}}:{{port}}/Medications
+Content-Type: application/json
+
+{
+  "patientId": "550e8400-e29b-41d4-a716-446655440000",
+  "name": "Lisinopril",
+  "dosage": "10mg",
+  "frequency": "Once daily",
+  "startDate": "2024-06-01",
+  "prescribedBy": "Dr. Smith",
+  "purpose": "Blood pressure control",
+  "recordedBy": "Dr. Smith"
+}
+
+###
+
+// Get a specific medication
+@medication_id_to_get=1
+GET {{host}}:{{port}}/Medications/{{medication_id_to_get}}
+
+###
+
+// Update a medication
+@medication_id_to_update=1
+PUT {{host}}:{{port}}/Medications/{{medication_id_to_update}}
+Content-Type: application/json
+
+{
+  "id": {{medication_id_to_update}},
+  "patientId": "550e8400-e29b-41d4-a716-446655440000",
+  "name": "Lisinopril",
+  "dosage": "10mg",
+  "frequency": "Once daily",
+  "startDate": "2024-06-01",
+  "prescribedBy": "Dr. Smith",
+  "purpose": "Blood pressure control",
+  "recordedBy": "Dr. Smith",
+  "isVisibleToFamily": true
+}
+
+###
+
+// Stop a medication
+@medication_id_to_stop=1
+POST {{host}}:{{port}}/Medications/{{medication_id_to_stop}}/stop
+Content-Type: application/json
+
+{
+  "endDate": "2025-01-15",
+  "reason": "Adverse side effects"
+}
+
+###
+
+// Complete a medication course
+@medication_id_to_complete=1
+POST {{host}}:{{port}}/Medications/{{medication_id_to_complete}}/complete
+Content-Type: application/json
+
+{
+  "endDate": "2025-01-15"
+}
+
+###
+
+// Record side effect for a medication
+@medication_id_for_side_effect=1
+POST {{host}}:{{port}}/Medications/{{medication_id_for_side_effect}}/side-effect
+Content-Type: application/json
+
+{
+  "sideEffect": "Dry cough"
+}
+
+###
+
+// Delete a medication
+@medication_id_to_delete=1
+DELETE {{host}}:{{port}}/Medications/{{medication_id_to_delete}}
+

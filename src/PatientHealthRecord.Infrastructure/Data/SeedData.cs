@@ -12,6 +12,7 @@ public static class SeedData
 
   // Patient seed data with Botswana names
   public static readonly Patient Patient1 = new(
+    patientId: Guid.Parse("550e8400-e29b-41d4-a716-446655440000"),
     email: "thabo.molefe@example.com",
     firstName: "Thabo",
     lastName: "Molefe",
@@ -22,6 +23,7 @@ public static class SeedData
   );
 
   public static readonly Patient Patient2 = new(
+    patientId: Guid.Parse("550e8400-e29b-41d4-a716-446655440001"),
     email: "neo.kgositsile@example.com",
     firstName: "Neo",
     lastName: "Kgositsile",
@@ -32,6 +34,7 @@ public static class SeedData
   );
 
   public static readonly Patient Patient3 = new(
+    patientId: Guid.Parse("550e8400-e29b-41d4-a716-446655440002"),
     email: "kagiso.segwabe@example.com",
     firstName: "Kagiso",
     lastName: "Segwabe",
@@ -39,7 +42,7 @@ public static class SeedData
     gender: Gender.Male,
     relationship: "Child",
     phoneNumber: null, // Child may not have own phone
-    primaryContactId: Patient1.PatientId.Value // Child belongs to Patient1's family
+    primaryContactId: Guid.Parse("550e8400-e29b-41d4-a716-446655440000") // Child belongs to Patient1's family
   );
 
   // Clinical data seed data

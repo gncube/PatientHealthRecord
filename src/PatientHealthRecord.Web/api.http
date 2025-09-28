@@ -142,7 +142,7 @@ GET {{host}}:{{port}}/ClinicalObservations
 ###
 
 // Get clinical observations for a specific patient
-@patient_id_for_obs=550e8400-e29b-41d4-a716-446655440000
+@patient_id_for_obs=9181dd80-d0fa-4a24-a1c8-7d832ea37646
 GET {{host}}:{{port}}/ClinicalObservations?patientId={{patient_id_for_obs}}
 
 ###
@@ -152,7 +152,7 @@ POST {{host}}:{{port}}/ClinicalObservations
 Content-Type: application/json
 
 {
-  "patientId": "550e8400-e29b-41d4-a716-446655440000",
+  "patientId": "9181dd80-d0fa-4a24-a1c8-7d832ea37646",
   "observationType": "Temperature",
   "value": "98.6",
   "unit": "F",
@@ -177,7 +177,7 @@ Content-Type: application/json
 
 {
   "id": {{obs_id_to_update}},
-  "patientId": "550e8400-e29b-41d4-a716-446655440000",
+  "patientId": "9181dd80-d0fa-4a24-a1c8-7d832ea37646",
   "observationType": "Temperature",
   "value": "98.6",
   "unit": "F",

@@ -24,11 +24,12 @@
     </PackageReference>
     <PackageReference Include="ReportGenerator" />
     <PackageReference Include="xunit" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="xunit.runner.json">
-	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
@@ -39,6 +40,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\PatientHealthRecord.Core\PatientHealthRecord.Core.csproj" />
     <ProjectReference Include="..\..\src\PatientHealthRecord.UseCases\PatientHealthRecord.UseCases.csproj" />
+    <ProjectReference Include="..\..\src\PatientHealthRecord.Infrastructure\PatientHealthRecord.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

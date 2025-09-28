@@ -59,6 +59,28 @@ public class Patient : EntityBase, IAggregateRoot
     RegisterDomainEvent(domainEvent);
   }
 
+  // Constructor for seeding with specific ID
+  public Patient(Guid patientId, string email, string firstName, string lastName,
+    DateTime dateOfBirth, Gender gender, string relationship = "Self",
+    Guid? primaryContactId = null, string? phoneNumber = null)
+  {
+    PatientId = new PatientId(patientId);
+    Email = Guard.Against.NullOrEmpty(email, nameof(email));
+    FirstName = Guard.Against.NullOrEmpty(firstName, nameof(firstName));
+    LastName = Guard.Against.NullOrEmpty(lastName, nameof(lastName));
+    DateOfBirth = Guard.Against.OutOfRange(dateOfBirth, nameof(dateOfBirth),
+      DateTime.UtcNow.AddYears(-150), DateTime.UtcNow);
+    Gender = gender;
+    Relationship = relationship;
+    PrimaryContactId = primaryContactId;
+    PhoneNumber = phoneNumber;
+    CreatedAt = DateTime.UtcNow;
+    IsActive = true;
+
+    var domainEvent = new PatientRegisteredDomainEvent(this);
+    RegisterDomainEvent(domainEvent);
+  }
+
   public void UpdatePersonalInfo(string firstName, string lastName, string? phoneNumber = null)
   {
     FirstName = Guard.Against.NullOrEmpty(firstName, nameof(firstName));

@@ -20,34 +20,3 @@ public record MedicationRecord(
 
 public record MedicationListResponse(
     IEnumerable<MedicationRecord> Medications);
-
-public record CreateMedicationRequest(
-    Guid PatientId,
-    string Name,
-    string? Dosage,
-    string? Frequency,
-    string? Instructions,
-    DateTime? StartDate,
-    string? PrescribedBy,
-    string? Purpose,
-    string RecordedBy,
-    bool IsVisibleToFamily);
-
-public record UpdateMedicationRequest(
-    string Name,
-    string? Dosage,
-    string? Frequency,
-    string? Instructions,
-    DateTime StartDate,
-    string? PrescribedBy,
-    string? Purpose,
-    string RecordedBy,
-    bool IsVisibleToFamily);
-
-public record StopMedicationRequest(
-    DateTime? EndDate,
-    string? Reason);
-
-public record CompleteMedicationRequest(DateTime? EndDate);
-
-public record RecordSideEffectRequest(string SideEffect);

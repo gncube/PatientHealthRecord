@@ -8,7 +8,7 @@ public class PatientRepository(AppDbContext dbContext) : IPatientRepository
   public async Task<Patient?> GetByIdAsync(Guid patientId, CancellationToken cancellationToken = default)
   {
     return await dbContext.Patients
-        .FirstOrDefaultAsync(p => p.PatientId.Value == patientId, cancellationToken);
+        .FirstOrDefaultAsync(p => p.PatientId == new PatientId(patientId), cancellationToken);
   }
 
   public async Task<List<Patient>> GetFamilyMembersAsync(Guid familyId, CancellationToken cancellationToken = default)
@@ -73,8 +73,10 @@ public class PatientRepository(AppDbContext dbContext) : IPatientRepository
       familyMemberIds.Add(primaryPatient.PrimaryContactId.Value);
     }
 
+    var familyMemberPatientIds = familyMemberIds.Select(id => new PatientId(id)).ToList();
+
     return await dbContext.Patients
-        .Where(p => familyMemberIds.Contains(p.PatientId.Value))
+        .Where(p => familyMemberPatientIds.Contains(p.PatientId))
         .ToListAsync(cancellationToken);
   }
 

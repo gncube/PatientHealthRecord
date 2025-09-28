@@ -1,5 +1,6 @@
 ﻿using PatientHealthRecord.Core.ContributorAggregate;
 using PatientHealthRecord.Core.PatientAggregate;
+using PatientHealthRecord.Core.ClinicalDataAggregate;
 
 namespace PatientHealthRecord.Infrastructure.Data;
 
@@ -10,6 +11,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options,
 
   public DbSet<Contributor> Contributors => Set<Contributor>();
   public DbSet<Patient> Patients => Set<Patient>();
+  public DbSet<ClinicalObservation> ClinicalObservations => Set<ClinicalObservation>();
+  public DbSet<Condition> Conditions => Set<Condition>();
+  public DbSet<Medication> Medications => Set<Medication>();
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

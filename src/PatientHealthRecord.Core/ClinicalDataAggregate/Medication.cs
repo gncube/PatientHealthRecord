@@ -1,6 +1,6 @@
 using PatientHealthRecord.Core.PatientAggregate;
 
-namespace PatientHealthRecord.Core.Entities.ClinicalDataAggregate;
+namespace PatientHealthRecord.Core.ClinicalDataAggregate;
 
 public class Medication : EntityBase
 {

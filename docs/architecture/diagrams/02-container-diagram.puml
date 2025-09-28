@@ -1,5 +1,5 @@
 @startuml ContainerDiagram
-!include C4_Container.puml
+!include ./C4_Container.puml
 
 LAYOUT_WITH_LEGEND()
 

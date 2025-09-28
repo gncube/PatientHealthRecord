@@ -45,6 +45,18 @@ All architectural diagrams are embedded in the AOD document using PlantUML forma
 
 All diagrams are available as individual PlantUML files in the [diagrams/](./diagrams/) folder for easy maintenance and rendering.
 
+### Diagram Rendering
+
+**VS Code Preview**: All PlantUML diagrams should render correctly in VS Code with the PlantUML extension installed.
+
+**Local Includes**: Diagrams use local C4 library files (`C4_Context.puml`, `C4_Container.puml`, `C4_Component.puml`) to avoid SSL certificate issues and ensure consistent rendering across environments.
+
+**Troubleshooting**: If diagrams don't preview correctly:
+
+- Ensure PlantUML extension is installed in VS Code
+- Check that local C4 files exist in the diagrams folder
+- Verify `!include ./C4_*.puml` statements use relative paths
+
 ## Standards and Guidelines
 
 ### Documentation Framework

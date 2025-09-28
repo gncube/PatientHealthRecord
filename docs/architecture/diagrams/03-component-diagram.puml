@@ -1,5 +1,5 @@
 @startuml ComponentDiagram
-!include C4_Component.puml
+!include ./C4_Component.puml
 
 LAYOUT_WITH_LEGEND()
 

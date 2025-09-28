@@ -1,0 +1,42 @@
+@startuml ComponentDiagram
+!include C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+Container_Boundary(web, "Web API Container") {
+    Component(endpoints, "FastEndpoints", "ASP.NET Core", "RESTful API endpoints with routing and serialization")
+    Component(middleware, "Middleware Pipeline", "ASP.NET Core", "Authentication, validation, error handling")
+    Component(swagger, "API Documentation", "Swagger/OpenAPI", "Interactive API documentation")
+}
+
+Container_Boundary(app, "Application Services Container") {
+    Component(handlers, "Command/Query Handlers", "MediatR", "CQRS implementation for use cases")
+    Component(validators, "Input Validators", "FluentValidation", "Request validation and business rules")
+    Component(mappers, "Data Mappers", "AutoMapper/Manual", "DTO to domain model mapping")
+}
+
+Container_Boundary(core, "Core Domain Container") {
+    Component(entities, "Domain Entities", ".NET 9", "Patient, ClinicalObservation, Contributor aggregates")
+    Component(valueobjs, "Value Objects", ".NET 9", "PatientId, Gender, ObservationCategory")
+    Component(events, "Domain Events", ".NET 9", "PatientRegisteredEvent, ObservationRecordedEvent")
+    Component(interfaces, "Repository Interfaces", ".NET 9", "Data access abstractions")
+}
+
+Container_Boundary(infra, "Infrastructure Container") {
+    Component(repos, "EF Repositories", "Entity Framework Core", "Data persistence implementation")
+    Component(dbcontext, "Database Context", "Entity Framework Core", "Database connection and mapping")
+    Component(services, "External Services", ".NET 9", "FHIR export, audit logging")
+}
+
+ContainerDb_Ext(db, "Database", "SQLite/Azure SQL")
+
+Rel(endpoints, handlers, "Executes", "MediatR")
+Rel(handlers, entities, "Uses domain logic")
+Rel(handlers, repos, "Data operations", "Repository pattern")
+Rel(repos, dbcontext, "Entity operations")
+Rel(dbcontext, db, "SQL queries")
+Rel(validators, handlers, "Validates input")
+Rel(entities, events, "Raises events")
+Rel(services, db, "Audit logging")
+
+@enduml

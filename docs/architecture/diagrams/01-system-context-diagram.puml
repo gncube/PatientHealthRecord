@@ -1,0 +1,28 @@
+```plantuml
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+
+Person(patient, "Patient/Family Member", "Manages personal and family health records")
+Person(provider, "Healthcare Provider", "Accesses patient data for clinical care")
+Person(admin, "System Administrator", "Manages system configuration and compliance")
+
+System(phr, "Patient Health Record System", "Manages patient medical information, family relationships, and clinical data with HIPAA compliance")
+
+System_Ext(ehr, "Electronic Health Record", "External EHR systems")
+System_Ext(fhir, "FHIR Server", "HL7 FHIR R4 compliant data exchange")
+System_Ext(audit, "Audit System", "Compliance and security logging")
+System_Ext(identity, "Identity Provider", "Authentication and authorization")
+
+Rel(patient, phr, "Manages health records", "HTTPS/Web API")
+Rel(provider, phr, "Accesses patient data", "HTTPS/API")
+Rel(admin, phr, "Administers system", "HTTPS/Admin API")
+
+Rel(phr, ehr, "Exchanges patient data", "HL7 FHIR R4")
+Rel(phr, fhir, "Exports clinical data", "HL7 FHIR R4")
+Rel(phr, audit, "Sends audit logs", "HTTPS")
+Rel(phr, identity, "Authenticates users", "OAuth2/OIDC")
+
+@enduml
+```

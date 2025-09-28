@@ -1,0 +1,41 @@
+@startuml DeploymentCICDSequence
+participant "Developer" as D
+participant "GitHub" as GH
+participant "GitHubActions" as GA
+participant "AzureDevOps" as ADO
+participant "AzureAppService" as AAS
+participant "Database" as DB
+
+D -> GH: Push Code Changes
+activate GH
+GH -> GA: Trigger CI Pipeline
+activate GA
+GA -> GA: Run Tests & Build
+GA -> GA: Security Scan & Code Analysis
+GA -> ADO: Deploy to Staging
+activate ADO
+ADO -> AAS: Deploy Application
+activate AAS
+AAS -> AAS: Health Check & Warm-up
+AAS -> DB: Run Migrations
+activate DB
+DB --> AAS: Migration Complete
+deactivate DB
+AAS --> ADO: Deployment Success
+deactivate AAS
+ADO --> GA: Staging Tests Pass
+deactivate ADO
+GA -> ADO: Deploy to Production
+activate ADO
+ADO -> AAS: Production Deployment
+activate AAS
+AAS -> AAS: Blue-Green Deployment
+AAS --> ADO: Production Live
+deactivate AAS
+ADO --> GA: Production Success
+deactivate ADO
+GA --> GH: Pipeline Complete
+deactivate GA
+GH --> D: Deployment Notification
+deactivate GH
+@enduml

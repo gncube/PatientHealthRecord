@@ -25,19 +25,36 @@ Architectural decisions are documented in the [architecture-decisions](../archit
 
 All architectural diagrams are embedded in the AOD document using PlantUML format:
 
+### C4 Model Diagrams
+
 - **System Context Diagram** - Shows system boundaries and external actors
 - **Container Diagram** - Shows high-level technology choices and container interactions
 - **Component Diagram** - Shows internal structure of key containers
-- **Sequence Diagrams** - Shows key user journey flows
+
+### Sequence Diagrams
+
+- **Patient Management Sequence** - Patient CRUD operations flow
+- **Family Dashboard Query Sequence** - Family member data retrieval with privacy filtering
+- **Clinical Data Management Sequence** - HL7 FHIR data processing and storage
+- **Contributor Management Sequence** - Healthcare contributor onboarding and permissions
+- **Data Synchronization Sequence** - External system data sync with FHIR bundles
+- **Audit and Compliance Sequence** - HIPAA-compliant audit log access
+- **Deployment and CI/CD Sequence** - Automated deployment pipeline flow
+
+### PlantUML Files
+
+All diagrams are available as individual PlantUML files in the [diagrams/](./diagrams/) folder for easy maintenance and rendering.
 
 ## Standards and Guidelines
 
 ### Documentation Framework
+
 - **Arc42 Template** - Structured architecture documentation
 - **C4 Model** - Hierarchical architectural views
 - **PlantUML** - Diagram as code for maintainability
 
 ### Architecture Principles
+
 - **Clean Architecture** - Separation of concerns and dependency inversion
 - **Domain-Driven Design** - Business-focused domain modeling
 - **CQRS** - Command Query Responsibility Segregation

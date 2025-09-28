@@ -1,0 +1,29 @@
+@startuml AuditComplianceSequence
+participant "Client" as C
+participant "AuditEndpoint" as E
+participant "GetAuditLogHandler" as H
+participant "AuditRepository" as R
+participant "Database" as DB
+participant "ComplianceService" as CS
+
+C -> E: GET /audit/logs?patientId={id}&dateRange={range}
+activate E
+E -> H: Send GetAuditLogQuery
+activate H
+H -> R: GetAuditLogsAsync(patientId, dateRange)
+activate R
+R -> DB: SELECT Audit Logs with HIPAA Filtering
+DB --> R: AuditLog List
+R --> H: List<AuditLog>
+deactivate R
+H -> CS: ValidateAccessPermissionsAsync(user, patientId)
+activate CS
+CS -> CS: Check HIPAA Privacy Rules
+CS --> H: Access Granted
+deactivate CS
+H -> H: Filter Sensitive Data
+H --> E: Result<List<AuditLogDto>>
+deactivate H
+E --> C: 200 OK + Filtered Audit Logs
+deactivate E
+@enduml

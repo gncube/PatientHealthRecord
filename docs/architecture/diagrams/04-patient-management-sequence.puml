@@ -1,0 +1,30 @@
+@startuml PatientManagementSequence
+participant "Client" as C
+participant "PatientEndpoint" as E
+participant "CreatePatientHandler" as H
+participant "PatientRepository" as R
+participant "Patient" as P
+participant "Database" as DB
+
+C -> E: POST /Patients
+activate E
+E -> E: Validate Request
+E -> H: Send CreatePatientCommand
+activate H
+H -> P: new Patient(...)
+activate P
+P -> P: Validate Business Rules
+P --> H: Patient Entity
+deactivate P
+H -> R: AddAsync(patient)
+activate R
+R -> DB: INSERT Patient
+DB --> R: Success
+R --> H: Patient
+deactivate R
+H -> P: Raise PatientRegisteredEvent
+H --> E: Result<PatientId>
+deactivate H
+E --> C: 201 Created + PatientDto
+deactivate E
+@enduml

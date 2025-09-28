@@ -1,0 +1,35 @@
+@startuml DataSynchronizationSequence
+participant "ExternalSystem" as ES
+participant "SyncEndpoint" as E
+participant "SyncDataHandler" as H
+participant "DataSyncService" as S
+participant "PatientRepository" as PR
+participant "ClinicalDataRepository" as CR
+participant "Database" as DB
+
+ES -> E: POST /sync/data (HL7 FHIR Bundle)
+activate E
+E -> H: Send SyncDataCommand
+activate H
+H -> S: ProcessSyncDataAsync(bundle)
+activate S
+S -> S: Validate FHIR Bundle
+S -> PR: SyncPatientDataAsync(patients)
+activate PR
+PR -> DB: UPSERT Patient Records
+DB --> PR: Success
+PR --> S: Patient Sync Complete
+deactivate PR
+S -> CR: SyncClinicalDataAsync(clinicalData)
+activate CR
+CR -> DB: UPSERT Clinical Records
+DB --> CR: Success
+CR --> S: Clinical Sync Complete
+deactivate CR
+S --> H: SyncResult
+deactivate S
+H --> E: Result<SyncResult>
+deactivate H
+E --> ES: 200 OK + Sync Confirmation
+deactivate E
+@enduml

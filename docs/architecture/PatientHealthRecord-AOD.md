@@ -268,7 +268,7 @@ deactivate E
 ### Family Dashboard Query Sequence
 
 ```plantuml
-@startuml
+@startuml FamilyDashboardSequence
 participant "Client" as C
 participant "FamilyEndpoint" as E
 participant "GetFamilyDashboardHandler" as H
@@ -294,7 +294,191 @@ deactivate E
 @enduml
 ```
 
----
+### Clinical Data Management Sequence
+
+```plantuml
+@startuml ClinicalDataManagementSequence
+participant "Client" as C
+participant "ClinicalEndpoint" as E
+participant "CreateClinicalDataHandler" as H
+participant "ClinicalDataRepository" as R
+participant "Database" as DB
+participant "HL7Processor" as P
+
+C -> E: POST /ClinicalData
+activate E
+E -> H: Send CreateClinicalDataCommand
+activate H
+H -> P: Validate HL7 FHIR Message
+activate P
+P -> P: Parse and Validate FHIR Resources
+P --> H: Validated ClinicalData
+deactivate P
+H -> R: CreateClinicalDataAsync(clinicalData)
+activate R
+R -> DB: INSERT Clinical Data with Audit Trail
+DB --> R: Success
+R --> H: ClinicalDataId
+deactivate R
+H --> E: Result<ClinicalDataId>
+deactivate H
+E --> C: 201 Created + ClinicalDataId
+deactivate E
+@enduml
+```
+
+### Contributor Management Sequence
+
+```plantuml
+@startuml ContributorManagementSequence
+participant "Client" as C
+participant "ContributorEndpoint" as E
+participant "AddContributorHandler" as H
+participant "ContributorRepository" as R
+participant "Database" as DB
+participant "EmailService" as ES
+
+C -> E: POST /Contributors
+activate E
+E -> H: Send AddContributorCommand
+activate H
+H -> R: AddContributorAsync(contributor)
+activate R
+R -> DB: INSERT Contributor with Permissions
+DB --> R: ContributorId
+R --> H: ContributorId
+deactivate R
+H -> ES: SendWelcomeEmailAsync(contributor.Email)
+activate ES
+ES -> ES: Send Welcome Email
+ES --> H: Email Sent
+deactivate ES
+H --> E: Result<ContributorId>
+deactivate H
+E --> C: 201 Created + ContributorId
+deactivate E
+@enduml
+```
+
+### Data Synchronization Sequence
+
+```plantuml
+@startuml DataSynchronizationSequence
+participant "ExternalSystem" as ES
+participant "SyncEndpoint" as E
+participant "SyncDataHandler" as H
+participant "DataSyncService" as S
+participant "PatientRepository" as PR
+participant "ClinicalDataRepository" as CR
+participant "Database" as DB
+
+ES -> E: POST /sync/data (HL7 FHIR Bundle)
+activate E
+E -> H: Send SyncDataCommand
+activate H
+H -> S: ProcessSyncDataAsync(bundle)
+activate S
+S -> S: Validate FHIR Bundle
+S -> PR: SyncPatientDataAsync(patients)
+activate PR
+PR -> DB: UPSERT Patient Records
+DB --> PR: Success
+PR --> S: Patient Sync Complete
+deactivate PR
+S -> CR: SyncClinicalDataAsync(clinicalData)
+activate CR
+CR -> DB: UPSERT Clinical Records
+DB --> CR: Success
+CR --> S: Clinical Sync Complete
+deactivate CR
+S --> H: SyncResult
+deactivate S
+H --> E: Result<SyncResult>
+deactivate H
+E --> ES: 200 OK + Sync Confirmation
+deactivate E
+@enduml
+```
+
+### Audit and Compliance Sequence
+
+```plantuml
+@startuml AuditComplianceSequence
+participant "Client" as C
+participant "AuditEndpoint" as E
+participant "GetAuditLogHandler" as H
+participant "AuditRepository" as R
+participant "Database" as DB
+participant "ComplianceService" as CS
+
+C -> E: GET /audit/logs?patientId={id}&dateRange={range}
+activate E
+E -> H: Send GetAuditLogQuery
+activate H
+H -> R: GetAuditLogsAsync(patientId, dateRange)
+activate R
+R -> DB: SELECT Audit Logs with HIPAA Filtering
+DB --> R: AuditLog List
+R --> H: List<AuditLog>
+deactivate R
+H -> CS: ValidateAccessPermissionsAsync(user, patientId)
+activate CS
+CS -> CS: Check HIPAA Privacy Rules
+CS --> H: Access Granted
+deactivate CS
+H -> H: Filter Sensitive Data
+H --> E: Result<List<AuditLogDto>>
+deactivate H
+E --> C: 200 OK + Filtered Audit Logs
+deactivate E
+@enduml
+```
+
+### Deployment and CI/CD Sequence
+
+```plantuml
+@startuml DeploymentCICDSequence
+participant "Developer" as D
+participant "GitHub" as GH
+participant "GitHubActions" as GA
+participant "AzureDevOps" as ADO
+participant "AzureAppService" as AAS
+participant "Database" as DB
+
+D -> GH: Push Code Changes
+activate GH
+GH -> GA: Trigger CI Pipeline
+activate GA
+GA -> GA: Run Tests & Build
+GA -> GA: Security Scan & Code Analysis
+GA -> ADO: Deploy to Staging
+activate ADO
+ADO -> AAS: Deploy Application
+activate AAS
+AAS -> AAS: Health Check & Warm-up
+AAS -> DB: Run Migrations
+activate DB
+DB --> AAS: Migration Complete
+deactivate DB
+AAS --> ADO: Deployment Success
+deactivate AAS
+ADO --> GA: Staging Tests Pass
+deactivate ADO
+GA -> ADO: Deploy to Production
+activate ADO
+ADO -> AAS: Production Deployment
+activate AAS
+AAS -> AAS: Blue-Green Deployment
+AAS --> ADO: Production Live
+deactivate AAS
+ADO --> GA: Production Success
+deactivate ADO
+GA --> GH: Pipeline Complete
+deactivate GA
+GH --> D: Deployment Notification
+deactivate GH
+@enduml
+```
 
 ## Risks & Technical Debt
 
@@ -326,17 +510,20 @@ deactivate E
 ### Security
 
 **Authentication & Authorization:**
+
 - OAuth 2.0/OpenID Connect integration with external identity providers
 - Role-based access control (RBAC) with patient, provider, and admin roles
 - API key authentication for system-to-system communication
 
 **Data Protection:**
+
 - Encryption at rest using Azure SQL Transparent Data Encryption (TDE)
 - Encryption in transit with TLS 1.3
 - Field-level encryption for sensitive PII data
 - HIPAA-compliant data handling procedures
 
 **HIPAA Compliance:**
+
 - Business Associate Agreement (BAA) with cloud providers
 - Audit logging of all data access and modifications
 - Data retention and destruction policies
@@ -345,17 +532,20 @@ deactivate E
 ### Scalability
 
 **Performance Patterns:**
+
 - CQRS for optimized read/write operations
 - Repository pattern with efficient query design
 - Connection pooling and database optimization
 - Response caching for frequently accessed data
 
 **Auto-scaling:**
+
 - Azure App Service auto-scaling based on CPU/memory metrics
 - Database connection pooling to handle concurrent requests
 - CDN implementation for static content delivery
 
 **Load Balancing:**
+
 - Azure Application Gateway with health probes
 - Session affinity for stateful operations
 - Geographic distribution capabilities
@@ -363,17 +553,20 @@ deactivate E
 ### Resilience
 
 **High Availability:**
+
 - Multi-zone deployment in Azure regions
 - Database replication and failover mechanisms
 - Health check endpoints for monitoring
 
 **Disaster Recovery:**
+
 - Automated database backups with point-in-time recovery
 - Cross-region backup replication
 - Recovery Time Objective (RTO): 4 hours
 - Recovery Point Objective (RPO): 1 hour
 
 **Fault Tolerance:**
+
 - Circuit breaker pattern for external service calls
 - Retry policies with exponential backoff
 - Graceful degradation for non-critical features
@@ -381,23 +574,27 @@ deactivate E
 ### Observability
 
 **Logging:**
+
 - Structured logging with Serilog
 - Correlation IDs for request tracing
 - Security event logging for compliance
 - Application Insights integration
 
 **Monitoring:**
+
 - Application performance monitoring (APM)
 - Custom metrics for business KPIs
 - Database performance monitoring
 - Real-time alerting for critical issues
 
 **Tracing:**
+
 - Distributed tracing for request flows
 - Performance profiling capabilities
 - Dependency tracking and visualization
 
 **Alerting:**
+
 - Proactive monitoring with configurable thresholds
 - Integration with on-call systems (PagerDuty)
 - Escalation procedures for critical issues
@@ -405,18 +602,21 @@ deactivate E
 ### Compliance
 
 **HIPAA Requirements:**
+
 - Administrative, physical, and technical safeguards
 - Minimum necessary standard for data access
 - Audit controls and integrity protections
 - Information access management procedures
 
 **HL7 FHIR Compliance:**
+
 - FHIR R4 resource structure implementation
 - RESTful FHIR API endpoints
 - Standardized clinical data exchange
 - Terminology binding to standard code systems
 
 **Data Governance:**
+
 - Data classification and handling procedures
 - Privacy impact assessments (PIAs)
 - Data subject rights management (GDPR considerations)
@@ -429,18 +629,21 @@ deactivate E
 ### Testing Strategy
 
 **Unit Testing:**
+
 - Domain model testing with comprehensive business rule validation
 - Use case handler testing with mocked dependencies
 - Repository pattern testing with in-memory databases
 - Target Coverage: 85%+ for core business logic
 
 **Integration Testing:**
+
 - Database integration testing with TestContainers
 - API endpoint testing with WebApplicationFactory
 - External service integration testing with test doubles
 - End-to-end user workflow validation
 
 **Load Testing:**
+
 - Performance baseline establishment with k6
 - Concurrent user simulation for critical workflows
 - Database performance testing under load
@@ -449,12 +652,14 @@ deactivate E
 ### Security Testing
 
 **HIPAA Security Testing:**
+
 - Penetration testing with healthcare-specific scenarios
 - Vulnerability scanning with OWASP ZAP
 - Data encryption verification testing
 - Access control testing with role-based scenarios
 
 **Security Scanning:**
+
 - Static Application Security Testing (SAST) with SonarQube
 - Dynamic Application Security Testing (DAST) in CI/CD
 - Dependency vulnerability scanning with Snyk
@@ -463,12 +668,14 @@ deactivate E
 ### Compliance Validation
 
 **Audit Testing:**
+
 - Audit trail completeness verification
 - Data retention policy compliance testing
 - Breach notification procedure validation
 - Business Associate Agreement (BAA) compliance verification
 
 **Data Quality Testing:**
+
 - FHIR resource validation against R4 schemas
 - Data integrity constraints verification
 - Patient privacy rule enforcement testing
@@ -520,6 +727,7 @@ deactivate E
 ## Roadmap & Future Considerations
 
 ### Phase 1: Foundation (Completed)
+
 - ✅ Core domain model implementation
 - ✅ Basic CRUD operations for patients
 - ✅ Family relationship management
@@ -527,6 +735,7 @@ deactivate E
 - ✅ Unit and integration test coverage
 
 ### Phase 2: Enhanced Features (Q1 2026)
+
 - 🔄 Advanced clinical data tracking
 - 🔄 FHIR R4 export capabilities
 - 🔄 Enhanced privacy controls
@@ -534,6 +743,7 @@ deactivate E
 - 🔄 Cold start mitigation (Azure Functions evaluation)
 
 ### Phase 3: Integration & Compliance (Q2 2026)
+
 - 📅 External EHR system integration
 - 📅 Advanced audit and compliance reporting
 - 📅 Multi-tenant architecture support
@@ -541,6 +751,7 @@ deactivate E
 - 📅 Real-time notifications
 
 ### Phase 4: Advanced Features (Q3-Q4 2026)
+
 - 📅 AI-powered health insights
 - 📅 Telemedicine integration
 - 📅 Wearable device data ingestion
@@ -550,18 +761,21 @@ deactivate E
 ### Technology Evolution
 
 **Modernization Initiatives:**
+
 - Migration from SQLite to Azure SQL Database
 - Container orchestration with Azure Container Apps
 - Microservices decomposition for high-load scenarios
 - Event-driven architecture with Azure Service Bus
 
 **Emerging Technology Adoption:**
+
 - .NET 10+ framework upgrades
 - Azure AI services integration
 - Serverless computing evaluation
 - Edge computing capabilities for offline scenarios
 
 **Organizational Target Architecture Alignment:**
+
 - Integration with enterprise identity management
 - Compliance with organizational security policies
 - Standardization on cloud-native architectures
@@ -572,21 +786,25 @@ deactivate E
 ## References
 
 ### Architecture Documentation
+
 - [ADR Repository](../architecture-decisions/) - Architectural decision records
 - [Clean Architecture Template](https://github.com/ardalis/CleanArchitecture) - Base architecture pattern
 - [Domain-Driven Design Fundamentals](https://www.pluralsight.com/courses/fundamentals-domain-driven-design) - DDD concepts and implementation
 
 ### Security & Compliance
+
 - [HIPAA Security Rule](https://www.hhs.gov/hipaa/for-professionals/security/index.html) - Healthcare data protection requirements
 - [HL7 FHIR R4](https://hl7.org/fhir/R4/) - Healthcare interoperability standards
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/) - Web application security risks
 
 ### Technical Standards
+
 - [Microsoft Azure Architecture Center](https://docs.microsoft.com/en-us/azure/architecture/) - Cloud architecture patterns
 - [.NET Application Architecture Guides](https://docs.microsoft.com/en-us/dotnet/architecture/) - .NET best practices
 - [RESTful API Design Guidelines](https://docs.microsoft.com/en-us/azure/architecture/best-practices/api-design) - API design standards
 
 ### Monitoring & Operations
+
 - [Azure Monitor Documentation](https://docs.microsoft.com/en-us/azure/azure-monitor/) - Monitoring and alerting
 - [Application Insights](https://docs.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview) - Application performance monitoring
 - [Azure Security Center](https://docs.microsoft.com/en-us/azure/security-center/) - Security monitoring and compliance
@@ -609,6 +827,7 @@ deactivate E
 ---
 
 **Document Control:**
+
 - **Next Review Date:** 2026-03-28
 - **Document Owner:** Architecture Team
 - **Approval:** CTO, Security Officer, Compliance Manager

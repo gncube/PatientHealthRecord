@@ -1,0 +1,28 @@
+@startuml ContributorManagementSequence
+participant "Client" as C
+participant "ContributorEndpoint" as E
+participant "AddContributorHandler" as H
+participant "ContributorRepository" as R
+participant "Database" as DB
+participant "EmailService" as ES
+
+C -> E: POST /Contributors
+activate E
+E -> H: Send AddContributorCommand
+activate H
+H -> R: AddContributorAsync(contributor)
+activate R
+R -> DB: INSERT Contributor with Permissions
+DB --> R: ContributorId
+R --> H: ContributorId
+deactivate R
+H -> ES: SendWelcomeEmailAsync(contributor.Email)
+activate ES
+ES -> ES: Send Welcome Email
+ES --> H: Email Sent
+deactivate ES
+H --> E: Result<ContributorId>
+deactivate H
+E --> C: 201 Created + ContributorId
+deactivate E
+@enduml

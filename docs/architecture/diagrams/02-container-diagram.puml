@@ -1,0 +1,27 @@
+@startuml ContainerDiagram
+!include C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+Person(user, "System Users", "Patients, providers, administrators")
+
+System_Boundary(phr, "Patient Health Record System") {
+    Container(web, "Web API", "ASP.NET Core 9", "RESTful API with FastEndpoints, Swagger documentation")
+    Container(core, "Core Domain", ".NET 9", "Domain entities, value objects, business rules")
+    Container(app, "Application Services", ".NET 9", "Use cases, CQRS commands/queries, MediatR")
+    Container(infra, "Infrastructure", ".NET 9", "Data access, external integrations, logging")
+    ContainerDb(db, "Database", "SQLite/Azure SQL", "Patient data, clinical records, audit logs")
+    Container(logging, "Logging", "Serilog", "Structured application logs")
+}
+
+System_Ext(external, "External Systems", "EHR, FHIR servers, identity providers")
+
+Rel(user, web, "API requests", "HTTPS/JSON")
+Rel(web, app, "Executes use cases", "MediatR")
+Rel(app, core, "Uses domain logic", "Direct calls")
+Rel(app, infra, "Data operations", "Repository pattern")
+Rel(infra, db, "CRUD operations", "Entity Framework Core")
+Rel(web, logging, "Application events", "Serilog")
+Rel(infra, external, "Data exchange", "HL7 FHIR/HTTPS")
+
+@enduml

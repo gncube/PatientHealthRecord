@@ -1,0 +1,28 @@
+@startuml ClinicalDataManagementSequence
+participant "Client" as C
+participant "ClinicalEndpoint" as E
+participant "CreateClinicalDataHandler" as H
+participant "ClinicalDataRepository" as R
+participant "Database" as DB
+participant "HL7Processor" as P
+
+C -> E: POST /ClinicalData
+activate E
+E -> H: Send CreateClinicalDataCommand
+activate H
+H -> P: Validate HL7 FHIR Message
+activate P
+P -> P: Parse and Validate FHIR Resources
+P --> H: Validated ClinicalData
+deactivate P
+H -> R: CreateClinicalDataAsync(clinicalData)
+activate R
+R -> DB: INSERT Clinical Data with Audit Trail
+DB --> R: Success
+R --> H: ClinicalDataId
+deactivate R
+H --> E: Result<ClinicalDataId>
+deactivate H
+E --> C: 201 Created + ClinicalDataId
+deactivate E
+@enduml

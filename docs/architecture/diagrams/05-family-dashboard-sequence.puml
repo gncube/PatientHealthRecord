@@ -1,0 +1,24 @@
+@startuml FamilyDashboardSequence
+participant "Client" as C
+participant "FamilyEndpoint" as E
+participant "GetFamilyDashboardHandler" as H
+participant "PatientRepository" as R
+participant "Database" as DB
+
+C -> E: GET /Patients/{id}/dashboard
+activate E
+E -> H: Send GetFamilyDashboardQuery
+activate H
+H -> R: GetFamilyDashboardAsync(familyId)
+activate R
+R -> DB: SELECT Family Members with Privacy Rules
+DB --> R: Patient List
+R --> H: List<Patient>
+deactivate R
+H -> H: Apply Privacy Filtering
+H -> H: Map to PatientSummaryDto
+H --> E: Result<List<PatientSummaryDto>>
+deactivate H
+E --> C: 200 OK + Family Dashboard Data
+deactivate E
+@enduml

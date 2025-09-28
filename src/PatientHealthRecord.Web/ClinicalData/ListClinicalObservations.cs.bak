@@ -1,0 +1,63 @@
+using PatientHealthRecord.UseCases.ClinicalObservations.List;
+
+namespace PatientHealthRecord.Web.ClinicalData;
+
+/// <summary>
+/// Request for listing clinical observations
+/// </summary>
+public class ClinicalObservationsRequest
+{
+    /// <summary>
+    /// Patient ID to filter observations (optional)
+    /// </summary>
+    public Guid? PatientId { get; set; }
+
+    /// <summary>
+    /// Number of records to skip
+    /// </summary>
+    public int? Skip { get; set; }
+
+    /// <summary>
+    /// Maximum number of records to return
+    /// </summary>
+    public int? Take { get; set; }
+}
+
+/// <summary>
+/// List all Clinical Observations
+/// </summary>
+public class ListClinicalObservations(IMediator _mediator) : Endpoint<ClinicalObservationsRequest, ClinicalObservationListResponse>
+{
+    public override void Configure()
+    {
+        Get("/ClinicalObservations");
+        AllowAnonymous();
+    }
+
+    public override async Task HandleAsync(ClinicalObservationsRequest request, CancellationToken cancellationToken)
+    {
+        // For now, if no PatientId is provided, we'll use a default or handle it differently
+        // This is a temporary fix to get the seeding working
+        var patientId = request.PatientId ?? Guid.NewGuid(); // This should be changed to proper logic
+        var query = new ListClinicalObservationsQuery(patientId, request.Skip, request.Take);
+        var result = await _mediator.Send(query, cancellationToken);
+
+        if (result.IsSuccess)
+        {
+            Response = new ClinicalObservationListResponse
+            {
+                ClinicalObservations = result.Value.Select(co => new ClinicalObservationRecord(
+                  co.Id,
+                  co.PatientId,
+                  co.ObservationType,
+                  co.Value,
+                  co.Unit,
+                  co.RecordedAt,
+                  co.RecordedBy,
+                  co.Category,
+                  co.Notes,
+                  co.IsVisibleToFamily)).ToList()
+            };
+        }
+    }
+}

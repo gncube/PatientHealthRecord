@@ -2,7 +2,7 @@ using PatientHealthRecord.Core.PatientAggregate;
 
 namespace PatientHealthRecord.Core.ClinicalDataAggregate;
 
-public class ClinicalObservation : EntityBase
+public class ClinicalObservation : EntityBase, IAggregateRoot
 {
   public PatientId PatientId { get; private set; }
   public string ObservationType { get; private set; } = string.Empty; // Weight, Height, Blood Pressure, etc.

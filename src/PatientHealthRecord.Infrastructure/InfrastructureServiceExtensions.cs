@@ -4,6 +4,7 @@ using PatientHealthRecord.Infrastructure.Data;
 using PatientHealthRecord.Infrastructure.Data.Queries;
 using PatientHealthRecord.UseCases.Contributors.List;
 using PatientHealthRecord.UseCases.Patients.List;
+using PatientHealthRecord.UseCases.ClinicalObservations.List;
 
 
 namespace PatientHealthRecord.Infrastructure;
@@ -25,6 +26,7 @@ public static class InfrastructureServiceExtensions
            .AddScoped<IPatientRepository, PatientRepository>()
            .AddScoped<IListContributorsQueryService, ListContributorsQueryService>()
            .AddScoped<IListPatientsQueryService, ListPatientsQueryService>()
+           .AddScoped<IListClinicalObservationsQueryService, ListClinicalObservationsQueryService>()
            .AddScoped<IDeleteContributorService, DeleteContributorService>();
 
 

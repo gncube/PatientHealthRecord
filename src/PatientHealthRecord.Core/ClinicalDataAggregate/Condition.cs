@@ -2,7 +2,7 @@ using PatientHealthRecord.Core.PatientAggregate;
 
 namespace PatientHealthRecord.Core.ClinicalDataAggregate;
 
-public class Condition : EntityBase
+public class Condition : EntityBase, IAggregateRoot
 {
   public PatientId PatientId { get; private set; }
   public string Name { get; private set; } = string.Empty;

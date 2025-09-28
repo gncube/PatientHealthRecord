@@ -33,7 +33,7 @@ public class StopMedicationCommandHandler : IRequestHandler<StopMedicationComman
         }
         else
         {
-            return Result.Error(result.Errors.ToArray());
+            return Result.Error(result.Errors.FirstOrDefault() ?? "Failed to stop medication");
         }
     }
 }

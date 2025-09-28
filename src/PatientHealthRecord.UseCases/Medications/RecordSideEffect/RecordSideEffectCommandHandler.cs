@@ -25,7 +25,7 @@ public class RecordSideEffectCommandHandler : IRequestHandler<RecordSideEffectCo
             return Result.NotFound($"Medication with ID {request.Id} not found");
         }
 
-        var result = medication.RecordSideEffect(request.SideEffect, request.Severity, request.ReportedDate);
+        var result = medication.RecordSideEffect(request.SideEffect, request.Severity, request.ReportedDate ?? DateTime.UtcNow);
         if (result.IsSuccess)
         {
             await _repository.UpdateAsync(medication, cancellationToken);
@@ -33,7 +33,7 @@ public class RecordSideEffectCommandHandler : IRequestHandler<RecordSideEffectCo
         }
         else
         {
-            return Result.Error(result.Errors.ToArray());
+            return Result.Error(result.Errors.FirstOrDefault() ?? "Failed to record side effect");
         }
     }
 }

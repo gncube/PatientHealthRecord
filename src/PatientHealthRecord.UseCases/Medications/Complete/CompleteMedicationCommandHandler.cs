@@ -33,7 +33,7 @@ public class CompleteMedicationCommandHandler : IRequestHandler<CompleteMedicati
         }
         else
         {
-            return Result.Error(result.Errors.ToArray());
+            return Result.Error(result.Errors.FirstOrDefault() ?? "Failed to complete medication");
         }
     }
 }

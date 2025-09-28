@@ -25,13 +25,14 @@ public class Medication : EntityBase, IAggregateRoot
   }
 
   public Medication(PatientId patientId, string name, string? dosage = null,
-    string? frequency = null, DateTime? startDate = null, string? prescribedBy = null,
+    string? frequency = null, string? instructions = null, DateTime? startDate = null, string? prescribedBy = null,
     string? purpose = null, string recordedBy = "Self", bool isVisibleToFamily = true)
   {
     PatientId = Guard.Against.Null(patientId, nameof(patientId));
     Name = Guard.Against.NullOrEmpty(name, nameof(name));
     Dosage = dosage;
     Frequency = frequency;
+    Instructions = instructions;
     StartDate = startDate ?? DateTime.UtcNow;
     Status = MedicationStatus.Active;
     PrescribedBy = prescribedBy;

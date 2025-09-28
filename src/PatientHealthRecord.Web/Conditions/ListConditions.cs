@@ -42,22 +42,21 @@ public class ListConditions(IMediator _mediator) : Endpoint<ConditionsRequest, C
 
         if (result.IsSuccess)
         {
-            Response = new ConditionListResponse
-            {
-                Conditions = result.Value.Select(c => new ConditionRecord(
-                    Id: c.Id,
-                    PatientId: c.PatientId.Value,
-                    Name: c.Name,
-                    Description: c.Description,
-                    OnsetDate: c.OnsetDate,
-                    Severity: c.Severity.ToString(),
-                    Status: c.Status.ToString(),
-                    Treatment: c.Treatment,
-                    ResolvedDate: c.ResolvedDate,
-                    RecordedBy: c.RecordedBy,
-                    RecordedAt: c.RecordedAt,
-                    IsVisibleToFamily: c.IsVisibleToFamily)).ToList()
-            };
+            var conditionRecords = result.Value.Select(c => new ConditionRecord(
+                Id: c.Id,
+                PatientId: c.PatientId.Value,
+                Name: c.Name,
+                Description: c.Description,
+                OnsetDate: c.OnsetDate,
+                Severity: c.Severity.ToString(),
+                Status: c.Status.ToString(),
+                Treatment: c.Treatment,
+                ResolvedDate: c.ResolvedDate,
+                RecordedBy: c.RecordedBy,
+                RecordedAt: c.RecordedAt,
+                IsVisibleToFamily: c.IsVisibleToFamily)).ToList();
+
+            Response = new ConditionListResponse(conditionRecords);
         }
     }
 }

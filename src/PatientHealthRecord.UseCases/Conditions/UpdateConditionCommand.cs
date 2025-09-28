@@ -29,8 +29,15 @@ public class UpdateConditionCommandHandler(IRepository<Condition> _repository) :
             severity = parsedSeverity;
         }
 
-        condition.UpdateTreatment(request.Treatment);
-        condition.UpdateSeverity(severity);
+        if (!string.IsNullOrWhiteSpace(request.Treatment))
+        {
+            condition.UpdateTreatment(request.Treatment);
+        }
+
+        if (severity.HasValue)
+        {
+            condition.UpdateSeverity(severity.Value);
+        }
 
         // Update other properties if provided
         if (!string.IsNullOrWhiteSpace(request.Name))

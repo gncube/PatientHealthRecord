@@ -123,13 +123,13 @@ Content-Type: application/json
 ###
 
 // Get family members for a patient (use a family ID from created patients)
-@family_id_to_get=550e8400-e29b-41d4-a716-446655440000
+@family_id_to_get=9181dd80-d0fa-4a24-a1c8-7d832ea37646
 GET {{host}}:{{port}}/Patients/{{family_id_to_get}}/family
 
 ###
 
 // Get family dashboard for a patient (use a family ID from created patients)
-@family_dashboard_id=550e8400-e29b-41d4-a716-446655440000
+@family_dashboard_id=9181dd80-d0fa-4a24-a1c8-7d832ea37646
 GET {{host}}:{{port}}/Patients/{{family_dashboard_id}}/dashboard
 
 ###
@@ -152,7 +152,7 @@ POST {{host}}:{{port}}/ClinicalObservations
 Content-Type: application/json
 
 {
-  "patientId": "9181dd80-d0fa-4a24-a1c8-7d832ea37646",
+  "patientId": "{{patient_id_for_obs}}",
   "observationType": "Temperature",
   "value": "98.6",
   "unit": "F",
@@ -177,7 +177,7 @@ Content-Type: application/json
 
 {
   "id": {{obs_id_to_update}},
-  "patientId": "9181dd80-d0fa-4a24-a1c8-7d832ea37646",
+  "patientId": "{{patient_id_for_obs}}",
   "observationType": "Temperature",
   "value": "98.6",
   "unit": "F",
@@ -204,7 +204,7 @@ GET {{host}}:{{port}}/Conditions
 ###
 
 // Get conditions for a specific patient
-@patient_id_for_conditions=550e8400-e29b-41d4-a716-446655440000
+@patient_id_for_conditions=9181dd80-d0fa-4a24-a1c8-7d832ea37646
 GET {{host}}:{{port}}/Conditions?patientId={{patient_id_for_conditions}}
 
 ###
@@ -214,7 +214,7 @@ POST {{host}}:{{port}}/Conditions
 Content-Type: application/json
 
 {
-  "patientId": "550e8400-e29b-41d4-a716-446655440000",
+  "patientId": "9181dd80-d0fa-4a24-a1c8-7d832ea37646",
   "name": "Hypertension",
   "description": "High blood pressure requiring monitoring",
   "onsetDate": "2024-06-01",
@@ -238,7 +238,7 @@ Content-Type: application/json
 
 {
   "id": {{condition_id_to_update}},
-  "patientId": "550e8400-e29b-41d4-a716-446655440000",
+  "patientId": "{{patient_id_for_conditions}}",
   "name": "Hypertension",
   "description": "High blood pressure - medication added",
   "onsetDate": "2024-06-01",
@@ -275,7 +275,7 @@ GET {{host}}:{{port}}/Medications
 ###
 
 // Get medications for a specific patient
-@patient_id_for_medications=550e8400-e29b-41d4-a716-446655440000
+@patient_id_for_medications=9181dd80-d0fa-4a24-a1c8-7d832ea37646
 GET {{host}}:{{port}}/Medications?patientId={{patient_id_for_medications}}
 
 ###
@@ -285,7 +285,7 @@ POST {{host}}:{{port}}/Medications
 Content-Type: application/json
 
 {
-  "patientId": "550e8400-e29b-41d4-a716-446655440000",
+  "patientId": "{{patient_id_for_medications}}",
   "name": "Lisinopril",
   "dosage": "10mg",
   "frequency": "Once daily",
@@ -310,7 +310,7 @@ Content-Type: application/json
 
 {
   "id": {{medication_id_to_update}},
-  "patientId": "550e8400-e29b-41d4-a716-446655440000",
+  "patientId": "{{patient_id_for_medications}}",
   "name": "Lisinopril",
   "dosage": "10mg",
   "frequency": "Once daily",

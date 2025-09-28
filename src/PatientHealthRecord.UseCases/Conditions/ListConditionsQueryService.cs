@@ -1,7 +1,6 @@
 using PatientHealthRecord.Core.ClinicalDataAggregate;
 using PatientHealthRecord.Core.Interfaces;
-using PatientHealthRecord.Core.ClinicalDataAggregate;
-using PatientHealthRecord.UseCases.Conditions.List;
+using Ardalis.Result;
 
 namespace PatientHealthRecord.UseCases.Conditions;
 
@@ -14,7 +13,7 @@ public class ListConditionsQueryService : IListConditionsQueryService
         _repository = repository;
     }
 
-    public async Task<IEnumerable<Condition>> ListAsync(Guid? patientId = null, int? skip = null, int? take = null, CancellationToken cancellationToken = default)
+    public async Task<Result<List<Condition>>> ListAsync(Guid? patientId = null, int? skip = null, int? take = null, CancellationToken cancellationToken = default)
     {
         var spec = new ListConditionsSpecification(patientId);
 
@@ -31,6 +30,6 @@ public class ListConditionsQueryService : IListConditionsQueryService
             conditions = conditions.Take(take.Value);
         }
 
-        return conditions;
+        return Result.Success(conditions.ToList());
     }
 }

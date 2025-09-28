@@ -1,18 +1,19 @@
+using Ardalis.Result;
 using PatientHealthRecord.Core.ClinicalDataAggregate;
 using PatientHealthRecord.Core.Interfaces;
 using PatientHealthRecord.Core.PatientAggregate;
 
 namespace PatientHealthRecord.UseCases.Conditions.Create;
 
-public class CreateConditionCommandHandler(IRepository<Condition> _repository, IPatientRepository _patientRepository) : ICommandHandler<CreateConditionCommand, int>
+public class CreateConditionCommandHandler(IRepository<Condition> _repository, IPatientRepository _patientRepository) : ICommandHandler<CreateConditionCommand, Result<int>>
 {
-    public async Task<int> Handle(CreateConditionCommand request, CancellationToken cancellationToken)
+    public async Task<Result<int>> Handle(CreateConditionCommand request, CancellationToken cancellationToken)
     {
         // Validate that patient exists
         var patient = await _patientRepository.GetByIdAsync(request.PatientId, cancellationToken);
         if (patient == null)
         {
-            throw new ArgumentException($"Patient with ID {request.PatientId} not found", nameof(request.PatientId));
+            return Result.NotFound($"Patient with ID {request.PatientId} not found");
         }
 
         // Parse severity enum
@@ -31,6 +32,6 @@ public class CreateConditionCommandHandler(IRepository<Condition> _repository, I
             recordedBy: request.RecordedBy);
 
         var createdCondition = await _repository.AddAsync(condition, cancellationToken);
-        return createdCondition.Id;
+        return Result.Success(createdCondition.Id);
     }
 }

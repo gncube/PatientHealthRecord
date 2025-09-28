@@ -14,7 +14,7 @@ public class ResolveConditionCommandHandler(IRepository<Condition> _repository) 
             return Result.NotFound($"Condition with ID {request.Id} not found");
         }
 
-        condition.Resolve(request.ResolutionNotes);
+        condition.Resolve();
         await _repository.UpdateAsync(condition, cancellationToken);
         return Result.Success();
     }

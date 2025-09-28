@@ -1,5 +1,6 @@
 using FastEndpoints;
 using PatientHealthRecord.UseCases.Conditions;
+using PatientHealthRecord.UseCases.Conditions.Create;
 
 namespace PatientHealthRecord.Web.Conditions;
 

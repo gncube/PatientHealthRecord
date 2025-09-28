@@ -25,7 +25,7 @@ public class ListConditionsSpecification : Specification<Condition>
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
             Query.Where(c => c.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                           c.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+                           (c.Description != null && c.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)));
         }
 
         Query.OrderByDescending(c => c.OnsetDate);

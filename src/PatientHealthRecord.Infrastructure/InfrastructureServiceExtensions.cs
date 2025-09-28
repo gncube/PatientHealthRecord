@@ -29,7 +29,7 @@ public static class InfrastructureServiceExtensions
            .AddScoped<IListContributorsQueryService, ListContributorsQueryService>()
            .AddScoped<IListPatientsQueryService, ListPatientsQueryService>()
            .AddScoped<IListClinicalObservationsQueryService, ListClinicalObservationsQueryService>()
-           .AddScoped<PatientHealthRecord.UseCases.Conditions.List.IListConditionsQueryService, PatientHealthRecord.UseCases.Conditions.ListConditionsQueryService>()
+           .AddScoped<IListConditionsQueryService, PatientHealthRecord.Infrastructure.Data.Queries.ListConditionsQueryService>()
            .AddScoped<IDeleteContributorService, DeleteContributorService>();
 
 

@@ -1,3 +1,4 @@
+using Ardalis.Result;
 using PatientHealthRecord.Core.ClinicalDataAggregate;
 using PatientHealthRecord.Core.PatientAggregate;
 
@@ -10,4 +11,4 @@ public record CreateConditionCommand(
     DateTime? OnsetDate = null,
     string Severity = "Mild",
     string? Treatment = null,
-    string RecordedBy = "Self") : ICommand<int>;
+    string RecordedBy = "Self") : ICommand<Result<int>>;

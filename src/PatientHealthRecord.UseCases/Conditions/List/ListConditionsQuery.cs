@@ -22,7 +22,6 @@ public class ListConditionsQueryHandler(IListConditionsQueryService queryService
         ListConditionsQuery request,
         CancellationToken cancellationToken)
     {
-        var conditions = await queryService.ListAsync(request.PatientId, request.Skip, request.Take, cancellationToken);
-        return Result.Success(conditions.ToList());
+        return await queryService.ListAsync(request.PatientId, request.Skip, request.Take, cancellationToken);
     }
 }

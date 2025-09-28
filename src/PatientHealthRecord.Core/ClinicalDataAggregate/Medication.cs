@@ -1,3 +1,4 @@
+using Ardalis.Result;
 using PatientHealthRecord.Core.PatientAggregate;
 
 namespace PatientHealthRecord.Core.ClinicalDataAggregate;
@@ -39,25 +40,41 @@ public class Medication : EntityBase, IAggregateRoot
     IsVisibleToFamily = isVisibleToFamily;
   }
 
-  public void Stop(DateTime? endDate = null, string? reason = null)
+  public Result Stop(DateTime? endDate = null, string? reason = null)
   {
+    if (Status != MedicationStatus.Active)
+    {
+      return Result.Error("Cannot stop a medication that is not active");
+    }
     Status = MedicationStatus.Stopped;
     EndDate = endDate ?? DateTime.UtcNow;
     if (!string.IsNullOrEmpty(reason))
     {
       Instructions = string.IsNullOrEmpty(Instructions) ? reason : $"{Instructions}\nStopped: {reason}";
     }
+    return Result.Success();
   }
 
-  public void Complete(DateTime? endDate = null)
+  public Result Complete(DateTime? completionDate = null)
   {
+    if (Status != MedicationStatus.Active)
+    {
+      return Result.Error("Cannot complete a medication that is not active");
+    }
     Status = MedicationStatus.Completed;
-    EndDate = endDate ?? DateTime.UtcNow;
+    EndDate = completionDate ?? DateTime.UtcNow;
+    return Result.Success();
   }
 
-  public void RecordSideEffect(string sideEffect)
+  public Result RecordSideEffect(string sideEffect, string severity, DateTime reportedDate)
   {
-    SideEffects = string.IsNullOrEmpty(SideEffects) ? sideEffect : $"{SideEffects}, {sideEffect}";
+    if (string.IsNullOrEmpty(sideEffect))
+    {
+      return Result.Error("Side effect description is required");
+    }
+    var sideEffectEntry = $"{reportedDate:yyyy-MM-dd}: {sideEffect} (Severity: {severity})";
+    SideEffects = string.IsNullOrEmpty(SideEffects) ? sideEffectEntry : $"{SideEffects}\n{sideEffectEntry}";
+    return Result.Success();
   }
 }
 

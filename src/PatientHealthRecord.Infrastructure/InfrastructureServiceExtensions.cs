@@ -7,6 +7,7 @@ using PatientHealthRecord.UseCases.Patients.List;
 using PatientHealthRecord.UseCases.ClinicalObservations.List;
 using PatientHealthRecord.UseCases.Conditions;
 using PatientHealthRecord.UseCases.Conditions.List;
+using PatientHealthRecord.UseCases.Medications;
 
 
 namespace PatientHealthRecord.Infrastructure;
@@ -30,6 +31,7 @@ public static class InfrastructureServiceExtensions
            .AddScoped<IListPatientsQueryService, ListPatientsQueryService>()
            .AddScoped<IListClinicalObservationsQueryService, ListClinicalObservationsQueryService>()
            .AddScoped<IListConditionsQueryService, PatientHealthRecord.Infrastructure.Data.Queries.ListConditionsQueryService>()
+           .AddScoped<IListMedicationsQueryService, ListMedicationsQueryService>()
            .AddScoped<IDeleteContributorService, DeleteContributorService>();
 
 

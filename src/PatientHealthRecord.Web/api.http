@@ -352,7 +352,9 @@ POST {{host}}:{{port}}/Medications/{{medication_id_for_side_effect}}/side-effect
 Content-Type: application/json
 
 {
-  "sideEffect": "Dry cough"
+  "sideEffect": "Dry cough",
+  "severity": "Mild",
+  "reportedDate": "2025-01-15"
 }
 
 ###

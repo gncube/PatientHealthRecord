@@ -1,7 +1,7 @@
-using PatientHealthRecord.Core.Interfaces;
 using PatientHealthRecord.Core.PatientAggregate;
 using PatientHealthRecord.Core.ValueObjects;
 using PatientHealthRecord.UseCases.Patients.Create;
+using Ardalis.SharedKernel;
 using NSubstitute;
 using Shouldly;
 
@@ -17,7 +17,7 @@ public class CreatePatientHandlerHandle
   private readonly string _testRelationship = "Self";
   private readonly Guid _testPrimaryContactId = Guid.NewGuid();
   private readonly string _testPhoneNumber = "+1234567890";
-  private readonly IPatientRepository _repository = Substitute.For<IPatientRepository>();
+  private readonly IRepository<Patient> _repository = Substitute.For<IRepository<Patient>>();
   private CreatePatientHandler _handler;
 
   public CreatePatientHandlerHandle()

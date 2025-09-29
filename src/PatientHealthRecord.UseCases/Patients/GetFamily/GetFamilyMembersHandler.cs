@@ -1,5 +1,5 @@
-using PatientHealthRecord.Core.Interfaces;
 using PatientHealthRecord.Core.PatientAggregate;
+using PatientHealthRecord.Core.PatientAggregate.Specifications;
 using PatientHealthRecord.UseCases.Patients;
 using MediatR;
 using Ardalis.SharedKernel;
@@ -11,9 +11,9 @@ namespace PatientHealthRecord.UseCases.Patients.GetFamily;
 /// </summary>
 public class GetFamilyMembersHandler : IRequestHandler<GetFamilyMembersQuery, Result<List<PatientSummaryDto>>>
 {
-  private readonly IPatientRepository _patientRepository;
+  private readonly IRepository<Patient> _patientRepository;
 
-  public GetFamilyMembersHandler(IPatientRepository patientRepository)
+  public GetFamilyMembersHandler(IRepository<Patient> patientRepository)
   {
     _patientRepository = patientRepository;
   }
@@ -21,14 +21,16 @@ public class GetFamilyMembersHandler : IRequestHandler<GetFamilyMembersQuery, Re
   public async Task<Result<List<PatientSummaryDto>>> Handle(GetFamilyMembersQuery request, CancellationToken cancellationToken)
   {
     // Check if the primary patient exists
-    var primaryPatient = await _patientRepository.GetByIdAsync(request.FamilyId, cancellationToken);
+    var primaryPatientSpec = new PatientByIdSpec(request.FamilyId);
+    var primaryPatient = await _patientRepository.FirstOrDefaultAsync(primaryPatientSpec, cancellationToken);
     if (primaryPatient is null)
     {
       return Result.NotFound();
     }
 
     // Get all family members
-    var familyMembers = await _patientRepository.GetFamilyMembersAsync(request.FamilyId, cancellationToken);
+    var familyMembersSpec = new FamilyMembersSpec(request.FamilyId);
+    var familyMembers = await _patientRepository.ListAsync(familyMembersSpec, cancellationToken);
 
     var familyMemberDtos = familyMembers
         .Select(p => new PatientSummaryDto(

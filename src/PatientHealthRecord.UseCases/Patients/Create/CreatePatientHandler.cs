@@ -1,19 +1,19 @@
-using PatientHealthRecord.Core.Interfaces;
 using PatientHealthRecord.Core.PatientAggregate;
 using PatientHealthRecord.Core.ValueObjects;
+using PatientHealthRecord.UseCases.Patients;
 using MediatR;
 using Ardalis.SharedKernel;
 
 namespace PatientHealthRecord.UseCases.Patients.Create;
 
 /// <summary>
-/// Handler for creating a new Patient.
+/// Handler for creating a new patient.
 /// </summary>
-public class CreatePatientHandler : IRequestHandler<CreatePatientCommand, Result<Guid>>
+public class CreatePatientHandler : ICommandHandler<CreatePatientCommand, Result<Guid>>
 {
-  private readonly IPatientRepository _patientRepository;
+  private readonly IRepository<Patient> _patientRepository;
 
-  public CreatePatientHandler(IPatientRepository patientRepository)
+  public CreatePatientHandler(IRepository<Patient> patientRepository)
   {
     _patientRepository = patientRepository;
   }

@@ -1,5 +1,5 @@
-using PatientHealthRecord.Core.Interfaces;
 using PatientHealthRecord.Core.PatientAggregate;
+using PatientHealthRecord.Core.PatientAggregate.Specifications;
 using PatientHealthRecord.UseCases.Patients;
 using MediatR;
 using Ardalis.SharedKernel;
@@ -11,16 +11,17 @@ namespace PatientHealthRecord.UseCases.Patients.Get;
 /// </summary>
 public class GetPatientHandler : IRequestHandler<GetPatientQuery, Result<PatientDto>>
 {
-  private readonly IPatientRepository _patientRepository;
+  private readonly IRepository<Patient> _patientRepository;
 
-  public GetPatientHandler(IPatientRepository patientRepository)
+  public GetPatientHandler(IRepository<Patient> patientRepository)
   {
     _patientRepository = patientRepository;
   }
 
   public async Task<Result<PatientDto>> Handle(GetPatientQuery request, CancellationToken cancellationToken)
   {
-    var patient = await _patientRepository.GetByIdAsync(request.PatientId, cancellationToken);
+    var spec = new PatientByIdSpec(request.PatientId);
+    var patient = await _patientRepository.FirstOrDefaultAsync(spec, cancellationToken);
 
     if (patient is null)
     {

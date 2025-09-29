@@ -1,8 +1,9 @@
-using PatientHealthRecord.Core.Interfaces;
 using PatientHealthRecord.Core.PatientAggregate;
+using PatientHealthRecord.Core.PatientAggregate.Specifications;
 using PatientHealthRecord.Core.ValueObjects;
 using PatientHealthRecord.UseCases.Patients;
 using PatientHealthRecord.UseCases.Patients.Get;
+using Ardalis.SharedKernel;
 using NSubstitute;
 using Shouldly;
 
@@ -11,7 +12,7 @@ namespace PatientHealthRecord.UnitTests.UseCases.Patients.Get;
 public class GetPatientHandlerHandle
 {
   private readonly Guid _testPatientId = Guid.NewGuid();
-  private readonly IPatientRepository _repository = Substitute.For<IPatientRepository>();
+  private readonly IRepository<Patient> _repository = Substitute.For<IRepository<Patient>>();
   private GetPatientHandler _handler;
 
   public GetPatientHandlerHandle()
@@ -31,7 +32,7 @@ public class GetPatientHandlerHandle
     var patient = CreateTestPatient();
     var query = new GetPatientQuery(_testPatientId);
 
-    _repository.GetByIdAsync(_testPatientId, Arg.Any<CancellationToken>())
+    _repository.FirstOrDefaultAsync(Arg.Any<PatientByIdSpec>(), Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<Patient?>(patient));
 
     var result = await _handler.Handle(query, CancellationToken.None);
@@ -49,7 +50,7 @@ public class GetPatientHandlerHandle
   {
     var query = new GetPatientQuery(_testPatientId);
 
-    _repository.GetByIdAsync(_testPatientId, Arg.Any<CancellationToken>())
+    _repository.FirstOrDefaultAsync(Arg.Any<PatientByIdSpec>(), Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<Patient?>(null));
 
     var result = await _handler.Handle(query, CancellationToken.None);
@@ -59,13 +60,13 @@ public class GetPatientHandlerHandle
   }
 
   [Fact]
-  public async Task CallsRepositoryGetByIdAsync()
+  public async Task CallsRepositoryFirstOrDefaultAsync()
   {
     var query = new GetPatientQuery(_testPatientId);
 
     await _handler.Handle(query, CancellationToken.None);
 
-    await _repository.Received(1).GetByIdAsync(_testPatientId, Arg.Any<CancellationToken>());
+    await _repository.Received(1).FirstOrDefaultAsync(Arg.Any<PatientByIdSpec>(), Arg.Any<CancellationToken>());
   }
 
   [Fact]

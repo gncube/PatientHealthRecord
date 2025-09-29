@@ -1,8 +1,9 @@
-using PatientHealthRecord.Core.Interfaces;
 using PatientHealthRecord.Core.PatientAggregate;
+using PatientHealthRecord.Core.PatientAggregate.Specifications;
 using PatientHealthRecord.Core.ValueObjects;
 using PatientHealthRecord.UseCases.Patients;
 using PatientHealthRecord.UseCases.Patients.GetFamily;
+using Ardalis.SharedKernel;
 using NSubstitute;
 using Shouldly;
 
@@ -11,7 +12,7 @@ namespace PatientHealthRecord.UnitTests.UseCases.Patients.GetFamily;
 public class GetFamilyMembersHandlerHandle
 {
   private readonly Guid _testFamilyId = Guid.NewGuid();
-  private readonly IPatientRepository _repository = Substitute.For<IPatientRepository>();
+  private readonly IRepository<Patient> _repository = Substitute.For<IRepository<Patient>>();
   private GetFamilyMembersHandler _handler;
 
   public GetFamilyMembersHandlerHandle()
@@ -36,10 +37,10 @@ public class GetFamilyMembersHandlerHandle
     var patients = CreateTestFamily();
     var query = new GetFamilyMembersQuery(_testFamilyId);
 
-    _repository.GetByIdAsync(_testFamilyId, Arg.Any<CancellationToken>())
+    _repository.FirstOrDefaultAsync(Arg.Any<PatientByIdSpec>(), Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<Patient?>(patients[0]));
-    _repository.GetFamilyMembersAsync(_testFamilyId, Arg.Any<CancellationToken>())
-      .Returns(Task.FromResult(patients));
+    _repository.ListAsync(Arg.Any<FamilyMembersSpec>(), Arg.Any<CancellationToken>())
+      .Returns(Task.FromResult(patients.ToList()));
 
     var result = await _handler.Handle(query, CancellationToken.None);
 
@@ -54,10 +55,10 @@ public class GetFamilyMembersHandlerHandle
     var patients = CreateTestFamily();
     var query = new GetFamilyMembersQuery(_testFamilyId);
 
-    _repository.GetByIdAsync(_testFamilyId, Arg.Any<CancellationToken>())
+    _repository.FirstOrDefaultAsync(Arg.Any<PatientByIdSpec>(), Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<Patient?>(patients[0]));
-    _repository.GetFamilyMembersAsync(_testFamilyId, Arg.Any<CancellationToken>())
-      .Returns(Task.FromResult(patients));
+    _repository.ListAsync(Arg.Any<FamilyMembersSpec>(), Arg.Any<CancellationToken>())
+      .Returns(Task.FromResult(patients.ToList()));
 
     var result = await _handler.Handle(query, CancellationToken.None);
 
@@ -73,18 +74,18 @@ public class GetFamilyMembersHandlerHandle
   }
 
   [Fact]
-  public async Task CallsRepositoryGetFamilyMembersAsync()
+  public async Task CallsRepositoryListAsync()
   {
     var query = new GetFamilyMembersQuery(_testFamilyId);
 
-    _repository.GetByIdAsync(_testFamilyId, Arg.Any<CancellationToken>())
+    _repository.FirstOrDefaultAsync(Arg.Any<PatientByIdSpec>(), Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<Patient?>(CreateTestFamily()[0]));
-    _repository.GetFamilyMembersAsync(_testFamilyId, Arg.Any<CancellationToken>())
+    _repository.ListAsync(Arg.Any<FamilyMembersSpec>(), Arg.Any<CancellationToken>())
       .Returns(Task.FromResult(new List<Patient>()));
 
     await _handler.Handle(query, CancellationToken.None);
 
-    await _repository.Received(1).GetFamilyMembersAsync(_testFamilyId, Arg.Any<CancellationToken>());
+    await _repository.Received(1).ListAsync(Arg.Any<FamilyMembersSpec>(), Arg.Any<CancellationToken>());
   }
 
   [Fact]
@@ -93,10 +94,10 @@ public class GetFamilyMembersHandlerHandle
     var patients = new List<Patient>();
     var query = new GetFamilyMembersQuery(_testFamilyId);
 
-    _repository.GetByIdAsync(_testFamilyId, Arg.Any<CancellationToken>())
+    _repository.FirstOrDefaultAsync(Arg.Any<PatientByIdSpec>(), Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<Patient?>(CreateTestFamily()[0]));
-    _repository.GetFamilyMembersAsync(_testFamilyId, Arg.Any<CancellationToken>())
-      .Returns(Task.FromResult(patients));
+    _repository.ListAsync(Arg.Any<FamilyMembersSpec>(), Arg.Any<CancellationToken>())
+      .Returns(Task.FromResult(patients.ToList()));
 
     var result = await _handler.Handle(query, CancellationToken.None);
 
@@ -113,10 +114,10 @@ public class GetFamilyMembersHandlerHandle
     var patients = new List<Patient> { childPatient };
     var query = new GetFamilyMembersQuery(_testFamilyId);
 
-    _repository.GetByIdAsync(_testFamilyId, Arg.Any<CancellationToken>())
+    _repository.FirstOrDefaultAsync(Arg.Any<PatientByIdSpec>(), Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<Patient?>(childPatient));
-    _repository.GetFamilyMembersAsync(_testFamilyId, Arg.Any<CancellationToken>())
-      .Returns(Task.FromResult(patients));
+    _repository.ListAsync(Arg.Any<FamilyMembersSpec>(), Arg.Any<CancellationToken>())
+      .Returns(Task.FromResult(patients.ToList()));
 
     var result = await _handler.Handle(query, CancellationToken.None);
 

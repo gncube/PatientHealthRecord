@@ -1,16 +1,17 @@
 using Ardalis.Result;
 using PatientHealthRecord.Core.ClinicalDataAggregate;
-using PatientHealthRecord.Core.Interfaces;
 using PatientHealthRecord.Core.PatientAggregate;
+using PatientHealthRecord.Core.PatientAggregate.Specifications;
 
 namespace PatientHealthRecord.UseCases.Conditions.Create;
 
-public class CreateConditionCommandHandler(IRepository<Condition> _repository, IPatientRepository _patientRepository) : ICommandHandler<CreateConditionCommand, Result<int>>
+public class CreateConditionCommandHandler(IRepository<Condition> _repository, IRepository<Patient> _patientRepository) : ICommandHandler<CreateConditionCommand, Result<int>>
 {
     public async Task<Result<int>> Handle(CreateConditionCommand request, CancellationToken cancellationToken)
     {
         // Validate that patient exists
-        var patient = await _patientRepository.GetByIdAsync(request.PatientId, cancellationToken);
+        var patientSpec = new PatientByIdSpec(request.PatientId);
+        var patient = await _patientRepository.FirstOrDefaultAsync(patientSpec, cancellationToken);
         if (patient == null)
         {
             return Result.NotFound($"Patient with ID {request.PatientId} not found");

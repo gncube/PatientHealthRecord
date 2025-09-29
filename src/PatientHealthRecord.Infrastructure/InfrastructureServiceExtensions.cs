@@ -1,7 +1,9 @@
 ﻿using PatientHealthRecord.Core.Interfaces;
 using PatientHealthRecord.Core.Services;
+using PatientHealthRecord.Core.InteroperabilityAggregate;
 using PatientHealthRecord.Infrastructure.Data;
 using PatientHealthRecord.Infrastructure.Data.Queries;
+using PatientHealthRecord.Infrastructure.Services;
 using PatientHealthRecord.UseCases.Contributors.List;
 using PatientHealthRecord.UseCases.Patients.List;
 using PatientHealthRecord.UseCases.ClinicalObservations.List;
@@ -32,7 +34,8 @@ public static class InfrastructureServiceExtensions
            .AddScoped<IListClinicalObservationsQueryService, ListClinicalObservationsQueryService>()
            .AddScoped<IListConditionsQueryService, PatientHealthRecord.Infrastructure.Data.Queries.ListConditionsQueryService>()
            .AddScoped<IListMedicationsQueryService, ListMedicationsQueryService>()
-           .AddScoped<IDeleteContributorService, DeleteContributorService>();
+           .AddScoped<IDeleteContributorService, DeleteContributorService>()
+           .AddScoped<IFhirConversionService, FhirConversionService>();
 
 
     logger.LogInformation("{Project} services registered", "Infrastructure");

@@ -2,7 +2,7 @@ using PatientHealthRecord.Core.Services;
 using PatientHealthRecord.Core.PatientAggregate;
 using PatientHealthRecord.Core.ClinicalDataAggregate;
 using PatientHealthRecord.Core.InteroperabilityAggregate;
-using PatientHealthRecord.Core.Specifications;
+using PatientHealthRecord.Core.InteroperabilityAggregate.Specifications;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 

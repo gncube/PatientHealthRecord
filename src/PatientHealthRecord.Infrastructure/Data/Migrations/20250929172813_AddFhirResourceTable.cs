@@ -25,7 +25,7 @@ namespace PatientHealthRecord.Infrastructure.Data.Migrations
                     Status = table.Column<int>(type: "INTEGER", nullable: false),
                     LastUpdated = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Source = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
-                    Metadata = table.Column<string>(type: "TEXT", nullable: true)
+                    Metadata = table.Column<string>(type: "TEXT", nullable: false, defaultValue: "")
                 },
                 constraints: table =>
                 {

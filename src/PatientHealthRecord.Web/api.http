@@ -368,7 +368,7 @@ DELETE {{host}}:{{port}}/Medications/{{medication_id_to_delete}}
 # FHIR Interoperability Endpoints
 
 // Export patient data in FHIR JSON format
-@patient_id_for_fhir_export=550e8400-e29b-41d4-a716-446655440000
+@patient_id_for_fhir_export=550e8400-e29b-41d4-a716-446655440001
 GET {{host}}:{{port}}/Interoperability/ExportPatientData?patientId={{patient_id_for_fhir_export}}&format=Json&includeObservations=true&includeConditions=true&includeMedications=true
 
 ###

@@ -36,7 +36,7 @@ public class ExportPatientDataHandler : ICommandHandler<ExportPatientDataCommand
   public async Task<Result<FhirExportDto>> Handle(ExportPatientDataCommand request, CancellationToken cancellationToken)
   {
     // Get patient
-    var patient = await _patientRepository.GetByIdAsync(request.PatientId.Value, cancellationToken);
+    var patient = await _patientRepository.GetByIdAsync(request.PatientId, cancellationToken);
     if (patient == null)
     {
       return Result.NotFound($"Patient with ID {request.PatientId.Value} not found.");

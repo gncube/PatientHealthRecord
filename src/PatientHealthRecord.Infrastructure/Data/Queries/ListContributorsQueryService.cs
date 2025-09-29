@@ -9,13 +9,13 @@ public class ListContributorsQueryService(AppDbContext _db, ILogger<ListContribu
   // You can use EF, Dapper, SqlClient, etc. for queries -
   // this is just an example
 
-  public async Task<IEnumerable<ContributorDTO>> ListAsync()
+  public async Task<IEnumerable<ContributorDto>> ListAsync()
   {
     var startTime = DateTime.UtcNow;
     _logger.LogInformation("Starting ListContributorsQueryService.ListAsync at {StartTime}", startTime);
 
     // NOTE: This will fail if testing with EF InMemory provider!
-    var result = await _db.Database.SqlQuery<ContributorDTO>(
+    var result = await _db.Database.SqlQuery<ContributorDto>(
       $"SELECT Id, Name, PhoneNumber_Number AS PhoneNumber FROM Contributors") // don't fetch other big columns
       .ToListAsync();
 

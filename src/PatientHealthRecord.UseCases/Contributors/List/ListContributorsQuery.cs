@@ -16,7 +16,7 @@ public class ListContributorsQueryHandler2 : CommandHandler<ListContributorsQuer
   {
     _query = query;
   }
-  public override async Task<Result<IEnumerable<ContributorDTO>>> ExecuteAsync(ListContributorsQuery2 request, CancellationToken cancellationToken)
+  public override async Task<Result<IEnumerable<ContributorDto>>> ExecuteAsync(ListContributorsQuery2 request, CancellationToken cancellationToken)
   {
     var result = await _query.ListAsync();
 

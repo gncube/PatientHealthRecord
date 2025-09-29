@@ -22,7 +22,7 @@ public class List(IMediator _mediator, ILogger<List> _logger) : EndpointWithoutR
     var startTime = DateTime.UtcNow;
     _logger.LogInformation("Starting List Contributors request at {StartTime}", startTime);
 
-    Result<IEnumerable<ContributorDTO>> result = await _mediator.Send(new ListContributorsQuery(null, null), cancellationToken);
+    Result<IEnumerable<ContributorDto>> result = await _mediator.Send(new ListContributorsQuery(null, null), cancellationToken);
 
     var result2 = await new ListContributorsQuery2(null, null)
       .ExecuteAsync(cancellationToken);

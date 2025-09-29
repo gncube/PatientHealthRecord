@@ -1,6 +1,7 @@
 using PatientHealthRecord.Core.InteroperabilityAggregate;
 using PatientHealthRecord.Core.PatientAggregate;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace PatientHealthRecord.Infrastructure.Data.Config;
 
@@ -48,7 +49,12 @@ public class FhirResourceConfiguration : IEntityTypeConfiguration<FhirResource>
         .HasConversion(
             metadata => JsonSerializer.Serialize(metadata, JsonSerializerOptions.Default),
             json => JsonSerializer.Deserialize<Dictionary<string, string>>(json, JsonSerializerOptions.Default) ?? new Dictionary<string, string>())
-        .HasColumnType("TEXT");
+        .HasColumnType("TEXT")
+        .Metadata.SetValueComparer(
+            new ValueComparer<Dictionary<string, string>>(
+                (d1, d2) => d1 != null && d2 != null && d1.SequenceEqual(d2),
+                d => d != null ? d.GetHashCode() : 0,
+                d => d != null ? new Dictionary<string, string>(d) : new Dictionary<string, string>()));
 
     // Indexes for performance
     builder.HasIndex(f => f.PatientId);

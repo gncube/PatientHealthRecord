@@ -11,7 +11,7 @@
     "https": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchUrl": "scalar",
+      "launchUrl": "",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

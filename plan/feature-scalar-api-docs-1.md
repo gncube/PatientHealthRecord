@@ -48,12 +48,12 @@ This implementation plan outlines the steps to adopt Scalar as the primary inter
 
 ### Implementation Phase 3: Update Launch Settings
 
-- GOAL-003: Configure development launch URL for direct Scalar access
+- GOAL-003: Configure development launch URL for direct Scalar access (now at root path)
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
 | TASK-007 | Locate Properties/launchSettings.json in src/PatientHealthRecord.Web/Properties/launchSettings.json | ✅ | 2025-09-29 |
-| TASK-008 | Update the "launchUrl" property to "scalar" in the development profile | ✅ | 2025-09-29 |
+| TASK-008 | Update the "launchUrl" property to "" (empty string) for root path access | ✅ | 2025-09-29 |
 
 ### Implementation Phase 4: Test and Validate
 
@@ -62,7 +62,7 @@ This implementation plan outlines the steps to adopt Scalar as the primary inter
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
 | TASK-009 | Build the application to ensure no compilation errors | ✅ | 2025-09-29 |
-| TASK-010 | Run the application in development mode and navigate to /scalar | ✅ | 2025-09-29 |
+| TASK-010 | Run the application in development mode and navigate to root path "/" | ✅ | 2025-09-29 |
 | TASK-011 | Verify Scalar UI loads and displays API documentation | ✅ | 2025-09-29 |
 | TASK-012 | Test API endpoints through Scalar interface | ✅ | 2025-09-29 |
 | TASK-013 | Confirm Swagger UI is no longer accessible | ✅ | 2025-09-29 |

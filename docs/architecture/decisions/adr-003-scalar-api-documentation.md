@@ -37,7 +37,7 @@ We will adopt Scalar as the primary interactive API documentation tool, replacin
    ```
 
 3. **Update Launch Settings**:
-   - Set the launch URL to "scalar" in `launchSettings.json` for direct access to the documentation
+   - Set the launch URL to "" (empty string) in `launchSettings.json` for direct access to the documentation at the root path
 
 4. **Remove FastEndpoints SwaggerDocument**:
    - Remove the `.SwaggerDocument()` call from the FastEndpoints configuration

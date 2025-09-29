@@ -42,7 +42,11 @@ var app = builder.Build();
 await app.UseAppMiddlewareAndSeedDatabase();
 
 // Scalar API documentation (publicly accessible)
-app.MapScalarApiReference();
+app.MapScalarApiReference("/", options =>
+{
+  options.WithTitle("Patient Health Record API Documentation");
+});
+
 
 // OpenAPI document endpoint
 app.MapOpenApi();

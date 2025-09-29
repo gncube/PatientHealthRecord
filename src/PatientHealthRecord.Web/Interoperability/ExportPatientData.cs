@@ -1,4 +1,4 @@
-using PatientHealthRecord.UseCases.Interoperability;
+using PatientHealthRecord.UseCases.Interoperability.ExportPatientData;
 using PatientHealthRecord.Core.PatientAggregate;
 
 namespace PatientHealthRecord.Web.Interoperability;
@@ -44,7 +44,7 @@ public class ExportPatientData(IMediator _mediator)
             format = FhirExportFormat.Json; // Default to JSON
         }
 
-        var command = new ExportPatientDataCommand(
+        var query = new ExportPatientDataQuery(
             new PatientId(request.PatientId),
             format,
             request.IncludeObservations,
@@ -54,7 +54,7 @@ public class ExportPatientData(IMediator _mediator)
             request.ToDate
         );
 
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(query, cancellationToken);
 
         if (result.IsSuccess)
         {

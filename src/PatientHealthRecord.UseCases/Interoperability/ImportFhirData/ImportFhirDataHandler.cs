@@ -7,8 +7,11 @@ using PatientHealthRecord.Core.ClinicalDataAggregate;
 using PatientHealthRecord.Core.PatientAggregate;
 using System.Threading.Tasks;
 
-namespace PatientHealthRecord.UseCases.Interoperability;
+namespace PatientHealthRecord.UseCases.Interoperability.ImportFhirData;
 
+/// <summary>
+/// Handler for importing FHIR data.
+/// </summary>
 public class ImportFhirDataHandler : ICommandHandler<ImportFhirDataCommand, Result<FhirImportResultDto>>
 {
   private readonly IRepository<FhirResource> _fhirRepository;

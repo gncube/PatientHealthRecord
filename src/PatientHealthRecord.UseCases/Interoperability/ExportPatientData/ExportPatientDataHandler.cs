@@ -6,9 +6,12 @@ using PatientHealthRecord.Core.InteroperabilityAggregate.Specifications;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 
-namespace PatientHealthRecord.UseCases.Interoperability;
+namespace PatientHealthRecord.UseCases.Interoperability.ExportPatientData;
 
-public class ExportPatientDataHandler : ICommandHandler<ExportPatientDataCommand, Result<FhirExportDto>>
+/// <summary>
+/// Handler for exporting patient data in FHIR format.
+/// </summary>
+public class ExportPatientDataHandler : IQueryHandler<ExportPatientDataQuery, Result<FhirExportDto>>
 {
   private readonly IReadRepository<PatientHealthRecord.Core.PatientAggregate.Patient> _patientRepository;
   private readonly IReadRepository<PatientHealthRecord.Core.ClinicalDataAggregate.ClinicalObservation> _observationRepository;
@@ -33,7 +36,7 @@ public class ExportPatientDataHandler : ICommandHandler<ExportPatientDataCommand
     _fhirConversionService = fhirConversionService;
   }
 
-  public async Task<Result<FhirExportDto>> Handle(ExportPatientDataCommand request, CancellationToken cancellationToken)
+  public async Task<Result<FhirExportDto>> Handle(ExportPatientDataQuery request, CancellationToken cancellationToken)
   {
     // Get patient
     var patient = await _patientRepository.GetByIdAsync(request.PatientId, cancellationToken);

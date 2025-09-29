@@ -2,9 +2,12 @@ using Ardalis.Result;
 using PatientHealthRecord.Core.PatientAggregate;
 using PatientHealthRecord.Core.ValueObjects;
 
-namespace PatientHealthRecord.UseCases.Interoperability;
+namespace PatientHealthRecord.UseCases.Interoperability.ExportPatientData;
 
-public record ExportPatientDataCommand(
+/// <summary>
+/// Export patient data in FHIR format.
+/// </summary>
+public record ExportPatientDataQuery(
     PatientId PatientId,
     FhirExportFormat Format = FhirExportFormat.Json,
     bool IncludeObservations = true,
@@ -12,7 +15,7 @@ public record ExportPatientDataCommand(
     bool IncludeMedications = true,
     DateTime? FromDate = null,
     DateTime? ToDate = null
-) : Ardalis.SharedKernel.ICommand<Result<FhirExportDto>>;
+) : Ardalis.SharedKernel.IQuery<Result<FhirExportDto>>;
 
 public enum FhirExportFormat
 {

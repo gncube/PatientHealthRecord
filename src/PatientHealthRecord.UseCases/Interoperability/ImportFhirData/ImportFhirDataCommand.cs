@@ -2,8 +2,11 @@ using Ardalis.Result;
 using PatientHealthRecord.Core.PatientAggregate;
 using PatientHealthRecord.Core.ValueObjects;
 
-namespace PatientHealthRecord.UseCases.Interoperability;
+namespace PatientHealthRecord.UseCases.Interoperability.ImportFhirData;
 
+/// <summary>
+/// Import FHIR data for a patient.
+/// </summary>
 public record ImportFhirDataCommand(
     PatientId PatientId,
     string FhirContent,

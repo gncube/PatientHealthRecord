@@ -5,10 +5,10 @@ using FastEndpoints;
 
 namespace PatientHealthRecord.UseCases.Contributors.List;
 
-public record ListContributorsQuery(int? Skip, int? Take) : IQuery<Result<IEnumerable<ContributorDTO>>>;
-public record ListContributorsQuery2(int? Skip, int? Take) : FastEndpoints.ICommand<Result<IEnumerable<ContributorDTO>>>;
+public record ListContributorsQuery(int? Skip, int? Take) : IQuery<Result<IEnumerable<ContributorDto>>>;
+public record ListContributorsQuery2(int? Skip, int? Take) : FastEndpoints.ICommand<Result<IEnumerable<ContributorDto>>>;
 
-public class ListContributorsQueryHandler2 : CommandHandler<ListContributorsQuery2, Result<IEnumerable<ContributorDTO>>>
+public class ListContributorsQueryHandler2 : CommandHandler<ListContributorsQuery2, Result<IEnumerable<ContributorDto>>>
 {
   private readonly IListContributorsQueryService _query;
 

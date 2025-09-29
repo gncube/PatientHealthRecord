@@ -3,9 +3,9 @@
 namespace PatientHealthRecord.UseCases.Contributors.Update;
 
 public class UpdateContributorHandler(IRepository<Contributor> _repository)
-  : ICommandHandler<UpdateContributorCommand, Result<ContributorDTO>>
+  : ICommandHandler<UpdateContributorCommand, Result<ContributorDto>>
 {
-  public async Task<Result<ContributorDTO>> Handle(UpdateContributorCommand request, CancellationToken cancellationToken)
+  public async Task<Result<ContributorDto>> Handle(UpdateContributorCommand request, CancellationToken cancellationToken)
   {
     var existingContributor = await _repository.GetByIdAsync(request.ContributorId, cancellationToken);
     if (existingContributor == null)
@@ -17,7 +17,7 @@ public class UpdateContributorHandler(IRepository<Contributor> _repository)
 
     await _repository.UpdateAsync(existingContributor, cancellationToken);
 
-    return new ContributorDTO(existingContributor.Id,
+    return new ContributorDto(existingContributor.Id,
       existingContributor.Name, existingContributor.PhoneNumber?.Number ?? "");
   }
 }

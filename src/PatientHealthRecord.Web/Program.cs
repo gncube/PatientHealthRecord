@@ -1,6 +1,7 @@
 ﻿using PatientHealthRecord.UseCases.Contributors.Create;
 using PatientHealthRecord.Web.Configurations;
 using Scalar.AspNetCore;
+using Microsoft.AspNetCore.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,12 +20,13 @@ var appLogger = new SerilogLoggerFactory(logger)
 builder.Services.AddOptionConfigs(builder.Configuration, appLogger, builder);
 builder.Services.AddServiceConfigs(appLogger, builder);
 
+builder.Services.AddOpenApi();
 
 builder.Services.AddFastEndpoints()
-                // .SwaggerDocument(o =>
-                // {
-                //   o.ShortSchemaNames = true;
-                // })
+                .SwaggerDocument(o =>
+                {
+                  o.ShortSchemaNames = true;
+                })
                 .AddCommandMiddleware(c =>
                 {
                   c.Register(typeof(CommandLogger<,>));
@@ -39,10 +41,11 @@ var app = builder.Build();
 
 await app.UseAppMiddlewareAndSeedDatabase();
 
-if (app.Environment.IsDevelopment())
-{
-  app.MapScalarApiReference();
-}
+// Scalar API documentation (publicly accessible)
+app.MapScalarApiReference();
+
+// OpenAPI document endpoint
+app.MapOpenApi();
 
 app.Run();
 

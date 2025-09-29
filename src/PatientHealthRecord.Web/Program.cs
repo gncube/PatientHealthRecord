@@ -1,5 +1,6 @@
 ﻿using PatientHealthRecord.UseCases.Contributors.Create;
 using PatientHealthRecord.Web.Configurations;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,10 +21,10 @@ builder.Services.AddServiceConfigs(appLogger, builder);
 
 
 builder.Services.AddFastEndpoints()
-                .SwaggerDocument(o =>
-                {
-                  o.ShortSchemaNames = true;
-                })
+                // .SwaggerDocument(o =>
+                // {
+                //   o.ShortSchemaNames = true;
+                // })
                 .AddCommandMiddleware(c =>
                 {
                   c.Register(typeof(CommandLogger<,>));
@@ -37,6 +38,11 @@ builder.AddServiceDefaults();
 var app = builder.Build();
 
 await app.UseAppMiddlewareAndSeedDatabase();
+
+if (app.Environment.IsDevelopment())
+{
+  app.MapScalarApiReference();
+}
 
 app.Run();
 

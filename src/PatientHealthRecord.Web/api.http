@@ -363,3 +363,31 @@ Content-Type: application/json
 @medication_id_to_delete=1
 DELETE {{host}}:{{port}}/Medications/{{medication_id_to_delete}}
 
+###
+
+# FHIR Interoperability Endpoints
+
+// Export patient data in FHIR JSON format
+@patient_id_for_fhir_export=550e8400-e29b-41d4-a716-446655440000
+GET {{host}}:{{port}}/Interoperability/ExportPatientData?patientId={{patient_id_for_fhir_export}}&format=Json&includeObservations=true&includeConditions=true&includeMedications=true
+
+###
+
+// Export patient data in FHIR XML format
+GET {{host}}:{{port}}/Interoperability/ExportPatientData?patientId={{patient_id_for_fhir_export}}&format=Xml&includeObservations=true&includeConditions=true&includeMedications=true
+
+###
+
+// Export patient data with date range filter (last 6 months)
+GET {{host}}:{{port}}/Interoperability/ExportPatientData?patientId={{patient_id_for_fhir_export}}&format=Json&includeObservations=true&includeConditions=true&includeMedications=true&fromDate=2024-03-29&toDate=2024-09-29
+
+###
+
+// Export only patient observations (no conditions or medications)
+GET {{host}}:{{port}}/Interoperability/ExportPatientData?patientId={{patient_id_for_fhir_export}}&format=Json&includeObservations=true&includeConditions=false&includeMedications=false
+
+###
+
+// Export only patient conditions and medications (no observations)
+GET {{host}}:{{port}}/Interoperability/ExportPatientData?patientId={{patient_id_for_fhir_export}}&format=Json&includeObservations=false&includeConditions=true&includeMedications=true
+

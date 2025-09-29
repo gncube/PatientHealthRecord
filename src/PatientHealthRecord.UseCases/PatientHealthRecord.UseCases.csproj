@@ -4,6 +4,7 @@
     <PackageReference Include="Ardalis.Result" />
     <PackageReference Include="Ardalis.Specification" />
     <PackageReference Include="FastEndpoints" />
+    <PackageReference Include="Hl7.Fhir.R4" />
     <PackageReference Include="MediatR" />
   </ItemGroup>
 

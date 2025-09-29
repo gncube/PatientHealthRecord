@@ -38,7 +38,7 @@ This implementation plan outlines the addition of FHIR (Fast Healthcare Interope
 
 | Task | Description | Completed | Date |
 |------|-------------|-----------|------|
-| TASK-001 | Create FhirResource entity in PatientHealthRecord.Core with properties for resource type, FHIR version, and JSON content |  |  |
+| TASK-001 | Create FhirResource entity in PatientHealthRecord.Core with properties for resource type, FHIR version, and JSON content | ✅ | 2025-09-29 |
 | TASK-002 | Add EF Core configuration for FhirResource entity in PatientHealthRecord.Infrastructure |  |  |
 | TASK-003 | Create database migration script for FhirResource table |  |  |
 | TASK-004 | Implement IFhirResourceRepository interface with CRUD operations |  |  |

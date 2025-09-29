@@ -222,6 +222,66 @@ namespace PatientHealthRecord.Infrastructure.Data.Migrations
                     b.ToTable("Medications", (string)null);
                 });
 
+            modelBuilder.Entity("PatientHealthRecord.Core.InteroperabilityAggregate.FhirResource", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Metadata")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ResourceId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ResourceType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Source")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("VersionId")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue("1");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PatientId")
+                        .HasDatabaseName("IX_FhirResources_PatientId");
+
+                    b.HasIndex("ResourceType")
+                        .HasDatabaseName("IX_FhirResources_ResourceType");
+
+                    b.HasIndex("LastUpdated")
+                        .HasDatabaseName("IX_FhirResources_LastUpdated");
+
+                    b.HasIndex("ResourceType", "ResourceId")
+                        .HasDatabaseName("IX_FhirResources_ResourceType_ResourceId");
+
+                    b.ToTable("FhirResources", (string)null);
+                });
+
             modelBuilder.Entity("PatientHealthRecord.Core.ContributorAggregate.Contributor", b =>
                 {
                     b.Property<int>("Id")

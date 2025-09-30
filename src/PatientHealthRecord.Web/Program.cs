@@ -20,8 +20,6 @@ var appLogger = new SerilogLoggerFactory(logger)
 builder.Services.AddOptionConfigs(builder.Configuration, appLogger, builder);
 builder.Services.AddServiceConfigs(appLogger, builder);
 
-builder.Services.AddOpenApi();
-
 builder.Services.AddFastEndpoints()
                 .SwaggerDocument(o =>
                 {
@@ -35,21 +33,13 @@ builder.Services.AddFastEndpoints()
 // wire up commands
 //builder.Services.AddTransient<ICommandHandler<CreateContributorCommand2,Result<int>>, CreateContributorCommandHandler2>();
 
+#if (aspire)
 builder.AddServiceDefaults();
+#endif
 
 var app = builder.Build();
 
 await app.UseAppMiddlewareAndSeedDatabase();
-
-// Scalar API documentation (publicly accessible)
-app.MapScalarApiReference("/", options =>
-{
-  options.WithTitle("Patient Health Record API Documentation");
-});
-
-
-// OpenAPI document endpoint
-app.MapOpenApi();
 
 app.Run();
 

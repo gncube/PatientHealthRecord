@@ -1,6 +1,6 @@
 using PatientHealthRecord.Core.ClinicalDataAggregate;
 
-namespace PatientHealthRecord.UseCases.Conditions;
+namespace PatientHealthRecord.UseCases.Conditions.Resolve;
 
 public record ResolveConditionCommand(int Id, string ResolutionNotes) : ICommand<Result>;
 

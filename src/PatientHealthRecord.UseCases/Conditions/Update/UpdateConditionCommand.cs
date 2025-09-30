@@ -1,6 +1,6 @@
 using PatientHealthRecord.Core.ClinicalDataAggregate;
 
-namespace PatientHealthRecord.UseCases.Conditions;
+namespace PatientHealthRecord.UseCases.Conditions.Update;
 
 public record UpdateConditionCommand(
     int Id,

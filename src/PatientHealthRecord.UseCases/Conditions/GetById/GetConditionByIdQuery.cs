@@ -1,6 +1,6 @@
 using PatientHealthRecord.Core.ClinicalDataAggregate;
 
-namespace PatientHealthRecord.UseCases.Conditions;
+namespace PatientHealthRecord.UseCases.Conditions.GetById;
 
 public record GetConditionByIdQuery(int ConditionId) : IQuery<Condition?>;
 

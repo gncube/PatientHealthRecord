@@ -2,7 +2,7 @@ using PatientHealthRecord.Core.ClinicalDataAggregate;
 using PatientHealthRecord.Core.Interfaces;
 using Ardalis.Result;
 
-namespace PatientHealthRecord.UseCases.Conditions;
+namespace PatientHealthRecord.UseCases.Conditions.List;
 
 public class ListConditionsQueryService : IListConditionsQueryService
 {

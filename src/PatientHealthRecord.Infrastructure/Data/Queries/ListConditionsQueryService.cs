@@ -1,6 +1,6 @@
 using Ardalis.Result;
 using PatientHealthRecord.Core.ClinicalDataAggregate;
-using PatientHealthRecord.UseCases.Conditions;
+using PatientHealthRecord.UseCases.Conditions.List;
 
 namespace PatientHealthRecord.Infrastructure.Data.Queries;
 

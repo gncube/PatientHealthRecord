@@ -1,7 +1,7 @@
 using Ardalis.Specification;
 using PatientHealthRecord.Core.ClinicalDataAggregate;
 
-namespace PatientHealthRecord.UseCases.Conditions;
+namespace PatientHealthRecord.Core.ClinicalDataAggregate.Specifications;
 
 public class ListConditionsSpecification : Specification<Condition>
 {

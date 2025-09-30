@@ -1,5 +1,5 @@
 using FastEndpoints;
-using PatientHealthRecord.UseCases.Conditions;
+using PatientHealthRecord.UseCases.Conditions.GetById;
 
 namespace PatientHealthRecord.Web.Conditions;
 

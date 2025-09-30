@@ -1,4 +1,5 @@
 using PatientHealthRecord.Core.ClinicalDataAggregate;
+using PatientHealthRecord.Core.ClinicalDataAggregate.Specifications;
 using PatientHealthRecord.Core.Interfaces;
 using Ardalis.Result;
 
@@ -6,30 +7,30 @@ namespace PatientHealthRecord.UseCases.Medications;
 
 public class ListMedicationsQueryService : IListMedicationsQueryService
 {
-    private readonly IRepository<Medication> _repository;
+  private readonly IRepository<Medication> _repository;
 
-    public ListMedicationsQueryService(IRepository<Medication> repository)
+  public ListMedicationsQueryService(IRepository<Medication> repository)
+  {
+    _repository = repository;
+  }
+
+  public async Task<Result<List<Medication>>> ListAsync(Guid? patientId = null, int? skip = null, int? take = null, CancellationToken cancellationToken = default)
+  {
+    var spec = new ListMedicationsSpecification(patientId);
+
+    IEnumerable<Medication> medications = await _repository.ListAsync(spec, cancellationToken);
+
+    // Apply skip/take if provided
+    if (skip.HasValue)
     {
-        _repository = repository;
+      medications = medications.Skip(skip.Value);
     }
 
-    public async Task<Result<List<Medication>>> ListAsync(Guid? patientId = null, int? skip = null, int? take = null, CancellationToken cancellationToken = default)
+    if (take.HasValue)
     {
-        var spec = new ListMedicationsSpecification(patientId);
-
-        IEnumerable<Medication> medications = await _repository.ListAsync(spec, cancellationToken);
-
-        // Apply skip/take if provided
-        if (skip.HasValue)
-        {
-            medications = medications.Skip(skip.Value);
-        }
-
-        if (take.HasValue)
-        {
-            medications = medications.Take(take.Value);
-        }
-
-        return Result.Success(medications.ToList());
+      medications = medications.Take(take.Value);
     }
+
+    return Result.Success(medications.ToList());
+  }
 }

@@ -1,15 +1,15 @@
 {
   "chat.modeFilesLocations": {
     ".github/awesome-copilot/chatmodes": true,
-    "C:\\REPOS\\awesome-copilot\\chatmodes": true
+    "C:\\Users\\Public\\AWESOME-COPILOT\\chatmodes": true
   },
   "chat.promptFilesLocations": {
     ".github/awesome-copilot/prompts": true,
-    "C:\\REPOS\\awesome-copilot\\prompts": true
+    "C:\\Users\\Public\\AWESOME-COPILOT\\prompts": true
   },
   "chat.instructionsFilesLocations": {
     ".github/awesome-copilot/instructions": true,
-    "C:\\REPOS\\awesome-copilot\\instructions": true
+    "C:\\Users\\Public\\AWESOME-COPILOT\\instructions": true
   },
   "files.eol": "\n",
   "files.insertFinalNewline": true,
@@ -18,18 +18,20 @@
     "files.trimTrailingWhitespace": false,
     "editor.formatOnSave": true
   },
-  "editor.rulers": [
-    100
-  ],
+  "editor.rulers": [100],
   "files.associations": {
     "*.chatmode.md": "markdown",
     "*.instructions.md": "markdown",
     "*.prompt.md": "markdown"
   },
   "github.copilot.chat.reviewSelection.instructions": [
-    { "file": ".github/awesome-copilot/instructions/gilfoyle-code-review.instructions.md" }
+    {
+      "file": ".github/awesome-copilot/instructions/gilfoyle-code-review.instructions.md"
+    }
   ],
   "github.copilot.chat.commitMessageGeneration.instructions": [
-    { "file": ".github/awesome-copilot/instructions/conventional-commit-message.instructions.md" }
+    {
+      "file": ".github/awesome-copilot/instructions/conventional-commit-message.instructions.md"
+    }
   ]
 }

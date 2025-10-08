@@ -33,5 +33,6 @@
     {
       "file": ".github/awesome-copilot/instructions/conventional-commit-message.instructions.md"
     }
-  ]
+  ],
+  "editor.formatOnSave": true
 }

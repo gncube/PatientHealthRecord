@@ -39,7 +39,7 @@ public class GetFamilyMembersHandlerHandle
 
     _repository.FirstOrDefaultAsync(Arg.Any<PatientByIdSpec>(), Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<Patient?>(patients[0]));
-    _repository.ListAsync(Arg.Any<FamilyMembersSpec>(), Arg.Any<CancellationToken>())
+    _repository.ListAsync(Arg.Any<PatientsByPrimaryContactSpec>(), Arg.Any<CancellationToken>())
       .Returns(Task.FromResult(patients.ToList()));
 
     var result = await _handler.Handle(query, CancellationToken.None);
@@ -57,7 +57,7 @@ public class GetFamilyMembersHandlerHandle
 
     _repository.FirstOrDefaultAsync(Arg.Any<PatientByIdSpec>(), Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<Patient?>(patients[0]));
-    _repository.ListAsync(Arg.Any<FamilyMembersSpec>(), Arg.Any<CancellationToken>())
+    _repository.ListAsync(Arg.Any<PatientsByPrimaryContactSpec>(), Arg.Any<CancellationToken>())
       .Returns(Task.FromResult(patients.ToList()));
 
     var result = await _handler.Handle(query, CancellationToken.None);
@@ -80,12 +80,12 @@ public class GetFamilyMembersHandlerHandle
 
     _repository.FirstOrDefaultAsync(Arg.Any<PatientByIdSpec>(), Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<Patient?>(CreateTestFamily()[0]));
-    _repository.ListAsync(Arg.Any<FamilyMembersSpec>(), Arg.Any<CancellationToken>())
+    _repository.ListAsync(Arg.Any<PatientsByPrimaryContactSpec>(), Arg.Any<CancellationToken>())
       .Returns(Task.FromResult(new List<Patient>()));
 
     await _handler.Handle(query, CancellationToken.None);
 
-    await _repository.Received(1).ListAsync(Arg.Any<FamilyMembersSpec>(), Arg.Any<CancellationToken>());
+    await _repository.Received(1).ListAsync(Arg.Any<PatientsByPrimaryContactSpec>(), Arg.Any<CancellationToken>());
   }
 
   [Fact]
@@ -96,14 +96,14 @@ public class GetFamilyMembersHandlerHandle
 
     _repository.FirstOrDefaultAsync(Arg.Any<PatientByIdSpec>(), Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<Patient?>(CreateTestFamily()[0]));
-    _repository.ListAsync(Arg.Any<FamilyMembersSpec>(), Arg.Any<CancellationToken>())
+    _repository.ListAsync(Arg.Any<PatientsByPrimaryContactSpec>(), Arg.Any<CancellationToken>())
       .Returns(Task.FromResult(patients.ToList()));
 
     var result = await _handler.Handle(query, CancellationToken.None);
 
     result.IsSuccess.ShouldBeTrue();
     result.Value.ShouldNotBeNull();
-    result.Value.Count.ShouldBe(0);
+    result.Value.Count.ShouldBe(1);
   }
 
   [Fact]
@@ -116,7 +116,7 @@ public class GetFamilyMembersHandlerHandle
 
     _repository.FirstOrDefaultAsync(Arg.Any<PatientByIdSpec>(), Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<Patient?>(childPatient));
-    _repository.ListAsync(Arg.Any<FamilyMembersSpec>(), Arg.Any<CancellationToken>())
+    _repository.ListAsync(Arg.Any<PatientsByPrimaryContactSpec>(), Arg.Any<CancellationToken>())
       .Returns(Task.FromResult(patients.ToList()));
 
     var result = await _handler.Handle(query, CancellationToken.None);

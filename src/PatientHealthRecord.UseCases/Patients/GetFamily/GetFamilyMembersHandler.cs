@@ -49,7 +49,7 @@ public class GetFamilyMembersHandler : IRequestHandler<GetFamilyMembersQuery, Re
 
     var familyMemberDtos = familyMembers
         .DistinctBy(p => p.PatientId.Value) // Remove duplicates
-        .OrderBy(p => p.Relationship)
+        .OrderBy(p => p.Relationship == "Self" ? 0 : p.Relationship == "Spouse" ? 1 : 2) // Self first, then Spouse, then others
         .ThenBy(p => p.FirstName)
         .Select(p => new PatientSummaryDto(
             p.PatientId.Value,

@@ -75,7 +75,7 @@ public class GetPatientHandlerHandle
     var patient = CreateTestPatient();
     var query = new GetPatientQuery(_testPatientId);
 
-    _repository.GetByIdAsync(_testPatientId, Arg.Any<CancellationToken>())
+    _repository.FirstOrDefaultAsync(Arg.Any<PatientByIdSpec>(), Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<Patient?>(patient));
 
     var result = await _handler.Handle(query, CancellationToken.None);

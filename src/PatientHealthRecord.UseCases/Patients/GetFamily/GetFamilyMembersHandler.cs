@@ -29,7 +29,7 @@ public class GetFamilyMembersHandler : IRequestHandler<GetFamilyMembersQuery, Re
     }
 
     // Get all family members
-    var familyMembers = new List<Patient>();
+    var familyMembers = new List<Patient> { primaryPatient };
 
     // Add parent if this patient has one
     if (primaryPatient.PrimaryContactId.HasValue)
